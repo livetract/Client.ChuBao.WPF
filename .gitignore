@@ -1,0 +1,8 @@
+.vs/
+.vscode/
+.rider/
+bin/
+obj/
+logs/
+icons/
+images/

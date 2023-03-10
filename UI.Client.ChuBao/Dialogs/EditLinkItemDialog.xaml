@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="UI.Client.ChuBao.Dialogs.EditLinkItemDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UI.Client.ChuBao.Dialogs"
+             mc:Ignorable="d" 
+              
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+             xmlns:viewmodels="clr-namespace:UI.Client.ChuBao.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:ContactViewModel}"
+             Width="500" Height="400"
+             >
+
+    <Border Background="Snow">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="topbar" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="35"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock x:Name="title_text"
+                       Grid.Column="0" 
+                       Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Title}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                        <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                            MethodName="DragMove"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                </TextBlock>
+                <Button x:Name="close" 
+                    Grid.Column="1" 
+                    IsCancel="True">
+                    <fa:IconImage Icon="WindowClose" />
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Click">
+                            <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                            MethodName="Close"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="姓名："/>
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="电话："/>
+                <TextBlock Grid.Column="0" Grid.Row="2" Text="小区："/>
+                <TextBlock Grid.Column="0" Grid.Row="3" Text="门牌："/>
+
+
+                <TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding LinkItem.Name, Mode=TwoWay}"/>
+                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding LinkItem.Phone, Mode=TwoWay}"/>
+                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding LinkItem.Complex, Mode=TwoWay}"/>
+                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding LinkItem.Door, Mode=TwoWay}"/>
+            </Grid>
+
+            <Button Content="Submit" Grid.Row="2" 
+                    Command="{Binding SubmitEditLinkItemCommand}"
+                    >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                            MethodName="Close"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
+
+        </Grid>
+    </Border>
+
+</UserControl>
