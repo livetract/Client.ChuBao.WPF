@@ -19,11 +19,11 @@
         BorderThickness="0"
         Background="Transparent"
         AllowsTransparency="True"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        
         >
 
-    <Border BorderThickness="0"
-            BorderBrush="Blue"
+    <Border BorderThickness="0.5"
+            BorderBrush="Black"
             Background="White">
 
         <Grid>
@@ -32,60 +32,74 @@
                 <RowDefinition />
                 <RowDefinition Height="35"/>
             </Grid.RowDefinitions>
-            
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="35"/>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="35"/>
-                    <ColumnDefinition Width="35"/>
-                    <ColumnDefinition Width="35"/>
-                </Grid.ColumnDefinitions>
 
-                <!--<i:Interaction.Triggers>
+            <Border Grid.Row="0"
+                    BorderThickness="0.3"
+                    BorderBrush="Black">
+
+                <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
                         <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
                                                 MethodName="DragMove"/>
                     </i:EventTrigger>
-                </i:Interaction.Triggers>-->
+                </i:Interaction.Triggers>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="35"/>
+                    </Grid.ColumnDefinitions>
                     <!--👆这个地方有限制：只有有内容的时候才能拖动-->
 
-                <Image x:Name="image_logo"
+                    <Image x:Name="image_logo"
                        Source="/images/logo.png" 
                        Grid.Column="0"/>
-                <TextBlock x:Name="tbx_title"
-                           Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=Title}"
-                           Grid.Column="1"/>
+                    <TextBlock x:Name="tbx_title"
+                               Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=Title}"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"/>
 
-                <Button x:Name="btn_control_minimize"
+                    <Button x:Name="btn_control_minimize"
                         Grid.Column="4">
-                    <fa:IconImage Icon="WindowMinimize"/>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                        <fa:IconImage Icon="WindowMinimize"/>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
                                                     PropertyName="WindowState"
                                                     Value="{x:Static WindowState.Minimized}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </Button>
-                <Button x:Name="btn_control_maximize"
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    <Button x:Name="btn_control_maximize"
                         Grid.Column="5">
-                    <fa:IconImage Icon="WindowMaximize"/>
-                </Button>
-                <Button x:Name="btn_control_close"
+                        <fa:IconImage Icon="WindowMaximize"/>
+                    </Button>
+                    <Button x:Name="btn_control_close"
                         Grid.Column="6">
-                    <fa:IconImage Icon="WindowClose"/>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                        <fa:IconImage Icon="WindowClose"/>
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
                                                 MethodName="Close"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </Button>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
 
-            </Grid>
+                    <Border Grid.Column="2">
+                        <TextBlock Text=" " />
+                    </Border>
+                    <Border Grid.Column="3">
+                        <TextBlock Text="" />
+                    </Border>
+                    
+                </Grid>
+            </Border>
+                
             
                 <Grid x:Name="body"
                       Grid.Row="1">
