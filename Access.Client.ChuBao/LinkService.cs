@@ -23,13 +23,35 @@ namespace Access.Client.ChuBao
         public async Task<bool> AddLinkAsync(LinkCreateDto model)
         {
             var url = _client.BaseAddress + "createcontact";
-            var reponse =await _client.PostAsJsonAsync(url,model,
+            var reponse = await _client.PostAsJsonAsync(url,model,
                 new JsonSerializerOptions(JsonSerializerDefaults.Web));
             if (!reponse.IsSuccessStatusCode )
             {
                 return false;
             }
             return true;
+        }
+
+        public async Task<bool> AddLinkRecordAsync(RecordCreateDto model)
+        {
+            var url = _client.BaseAddress + "addcontactrecord";
+            var reponse = await _client.PostAsJsonAsync(url,model,
+                new JsonSerializerOptions(JsonSerializerDefaults.Web)); 
+            if (!reponse.IsSuccessStatusCode ) { return false; }
+            return true;
+        }
+
+        public async Task<IEnumerable<RecordDto>> GetRecordListAsync(Guid contactId)
+        {
+            var url = _client.BaseAddress + "getcontactrecords";
+            var reponse = await _client.PostAsJsonAsync(url, contactId,
+                new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            if (!reponse.IsSuccessStatusCode )
+            {
+                return Enumerable.Empty<RecordDto>();
+            }
+            var records = await reponse.Content.ReadFromJsonAsync<List<RecordDto>>();
+            return records;
         }
 
         public Task<LinkDto> LoadLinkAsync()

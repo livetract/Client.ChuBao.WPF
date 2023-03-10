@@ -41,11 +41,21 @@ namespace UI.Client.ChuBao.ViewModels
             ShowLinkDetailViewCommand = new RelayCommand<LinkDto>(model => ExecuteShowLinkDetailView(model));
         }
 
+        #region Implements
+
+
         private void ExecuteShowLinkDetailView(LinkDto? model)
         {
             LinkItem = model!;
             var view = App.AppHost!.Services.GetRequiredService<LinkDetailComponent>();
             LinkDetailView = view;
+            ExcuteLoadLinkRecordListAsync(model!.Id);
+        }
+
+        private async void ExcuteLoadLinkRecordListAsync(Guid id)
+        {
+            var records = await _linkService.GetRecordListAsync(id);
+            Records = new ObservableCollection<RecordDto>(records);
         }
 
         private void ExecuteCreateEditLinkDialog(LinkDto model)
@@ -54,9 +64,6 @@ namespace UI.Client.ChuBao.ViewModels
 
             _dialogHandler.CreateDialog<EditLinkItemDialog>($"正在修改{model!.Name}的信息");
         }
-
-
-        #region Implements
 
         private async void ExcuteSubmitEditLinkItemAsync()
         {
@@ -117,6 +124,17 @@ namespace UI.Client.ChuBao.ViewModels
         private object? _linkDetaiView;
 
         public object? LinkDetailView { get => _linkDetaiView; set => SetProperty(ref _linkDetaiView, value); }
+
+        private ObservableCollection<RecordDto> _records;
+
+        public ObservableCollection<RecordDto> Records { get => _records; set => SetProperty(ref _records, value); }
+
+        private RecordCreateDto _newRecord;
+
+        public RecordCreateDto NewRecord { get => _newRecord; set => SetProperty(ref _newRecord, value); }
+       
+
+
 
         #endregion
     }
