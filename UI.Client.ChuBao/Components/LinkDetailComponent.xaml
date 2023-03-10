@@ -13,7 +13,7 @@
             <RowDefinition  />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid x:Name="grid_displayInformation" Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="2*"/>
@@ -53,7 +53,7 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="10 0 0 0" Text="{Binding AddTime}" />
+                                <TextBlock Margin="10 0 0 0" Text="{Binding AddTime, StringFormat={}{0:yy-MM-dd}}" />
                                 <TextBlock Margin="10 0 0 0" Text="{Binding Booker}" />
                                 <TextBlock Margin="10 0 0 0" Text="{Binding Content}" />
                             </StackPanel>
@@ -64,5 +64,35 @@
             </Grid>
 
         </Grid>
+
+        <Grid x:Name="grid_submitnewrecord"
+              Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Text="新的联络记录："
+                       Grid.Row="0"/>
+            
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                
+                <TextBox x:Name="tbx_newrecord" 
+                         Width="300"
+                         Height="100"
+                         Text="{Binding NewRecord.Content}"
+                         Grid.Column="0"/>
+                <Button Content="提交"
+                        Command="{Binding SubmitNewLinkRecordCommand}"
+                        CommandParameter="{Binding ElementName=tbx_newrecord, Path=Text}"
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"/>
+            </Grid>
+        </Grid>
+        
     </Grid>
 </UserControl>

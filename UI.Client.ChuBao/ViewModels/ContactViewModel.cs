@@ -26,6 +26,8 @@ namespace UI.Client.ChuBao.ViewModels
             this._dialogHandler = dialogHandler;
             this.LinkNewDto = new LinkCreateDto();
             this.LinkItem = new LinkDto();
+            this.NewRecord = new RecordCreateDto();
+
             this.LinkDetailView = App.AppHost!.Services.GetRequiredService<DefaultBlankViewComponent>();
 
             ExecuteLoadLinkListAsync();
@@ -39,23 +41,40 @@ namespace UI.Client.ChuBao.ViewModels
             SubmitEditLinkItemCommand = new RelayCommand(ExcuteSubmitEditLinkItemAsync);
 
             ShowLinkDetailViewCommand = new RelayCommand<LinkDto>(model => ExecuteShowLinkDetailView(model));
+            SubmitNewLinkRecordCommand = new RelayCommand(ExcuteSubmitNewLinkRecordAsync);
         }
 
         #region Implements
 
 
-        private void ExecuteShowLinkDetailView(LinkDto? model)
+
+        private async void ExcuteSubmitNewLinkRecordAsync()
         {
-            LinkItem = model!;
-            var view = App.AppHost!.Services.GetRequiredService<LinkDetailComponent>();
-            LinkDetailView = view;
-            ExcuteLoadLinkRecordListAsync(model!.Id);
+            //if (string.IsNullOrEmpty(content)) //空值不允许提交，后面前台要进行约束;
+            //    return;
+            // dev时是写死的，后面要获取登录的用户名来替代
+            NewRecord.Booker = "hyd";
+            NewRecord.ContactId = LinkItem.Id;
+            var result = await _linkService.AddLinkRecordAsync(NewRecord);
+            if (!result)
+            {
+                MessageBox.Show("出事了");
+            }
+            NewRecord = null;
+            ExcuteLoadLinkRecordListAsync(LinkItem!.Id);
         }
 
         private async void ExcuteLoadLinkRecordListAsync(Guid id)
         {
             var records = await _linkService.GetRecordListAsync(id);
             Records = new ObservableCollection<RecordDto>(records);
+        }
+        private void ExecuteShowLinkDetailView(LinkDto? model)
+        {
+            LinkItem = model!;
+            var view = App.AppHost!.Services.GetRequiredService<LinkDetailComponent>();
+            LinkDetailView = view;
+            ExcuteLoadLinkRecordListAsync(model!.Id);
         }
 
         private void ExecuteCreateEditLinkDialog(LinkDto model)
@@ -96,6 +115,7 @@ namespace UI.Client.ChuBao.ViewModels
         #endregion
 
         #region Commands
+        public RelayCommand SubmitNewLinkRecordCommand { get; set; }
         public RelayCommand<LinkDto> ShowLinkDetailViewCommand { get; set; }
 
         public RelayCommand<string> PopUpAddLinkCommand { get; set; }
