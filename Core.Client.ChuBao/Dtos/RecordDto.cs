@@ -1,4 +1,6 @@
-﻿namespace Core.Client.ChuBao.Dtos
+﻿using System;
+
+namespace Core.Client.ChuBao.Dtos
 {
     public class RecordDto
     {
