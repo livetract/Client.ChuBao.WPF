@@ -74,16 +74,12 @@ namespace UI.Client.ChuBao.ViewModels
 
         private async void ExcuteSubmitNewLinkRecordAsync()
         {
-            //if (string.IsNullOrEmpty(content)) //空值不允许提交，后面前台要进行约束;
-            //    return;
             // dev时是写死的，后面要获取登录的用户名来替代
             NewRecord!.Booker = "hyd";
             NewRecord.ContactId = LinkItem!.Id;
-            var result = await _linkService.AddLinkRecordAsync(NewRecord);
-            if (!result)
-            {
-                MessageBox.Show("出事了");
-            }
+
+            await _linkService.AddLinkRecordAsync(NewRecord);
+
             NewRecord = null;
             ExcuteLoadLinkRecordListAsync(LinkItem!.Id);
         }
