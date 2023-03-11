@@ -97,11 +97,14 @@ namespace UI.Client.ChuBao.ViewModels
         }
         private async void ExecuteShowLinkDetailView(LinkDto? model)
         {
+            if (model == null)
+            {
+                return;
+            }
+
             LinkItem = model!;
             LinkMark = await _linkService.GetLinkMarkAsync(LinkItem.Id);
-
-            var view = App.AppHost!.Services.GetRequiredService<LinkDetailComponent>();
-            LinkDetailView = view;
+            LinkDetailView = App.AppHost!.Services.GetRequiredService<LinkDetailComponent>();
             ExcuteLoadLinkRecordListAsync(model!.Id);
         }
 
@@ -124,12 +127,10 @@ namespace UI.Client.ChuBao.ViewModels
 
         private async void ExcuteSubmitNewLinkItemAsync()
         {
-            var result = await _linkService.AddLinkAsync(LinkNewDto!);
-            if (!result)
-            {
-                MessageBox.Show("出事了");
-            }
+            await _linkService.AddLinkAsync(LinkNewDto!);
+
             LinkNewDto = null;
+
             ExecuteLoadLinkListAsync();
         }
         private async void ExecuteLoadLinkListAsync()
