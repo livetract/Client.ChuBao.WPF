@@ -124,6 +124,8 @@ namespace UI.Client.ChuBao.ViewModels
         private async void ExcuteSubmitNewLinkItemAsync()
         {
             await _linkService.AddLinkAsync(LinkNewDto!);
+            // add record for this link
+
 
             LinkNewDto = null;
 

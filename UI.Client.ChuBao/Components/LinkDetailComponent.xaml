@@ -6,6 +6,7 @@
              xmlns:viewmodels="clr-namespace:UI.Client.ChuBao.ViewModels" 
              
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              
              d:DataContext="{d:DesignInstance Type=viewmodels:ContactViewModel}"
              mc:Ignorable="d" 
@@ -16,6 +17,7 @@
             <Setter Property="TextWrapping" Value="NoWrap"/>
             <Setter Property="TextTrimming" Value="None"/>
         </Style>
+        
     </UserControl.Resources>
     
     <Grid>
@@ -62,14 +64,89 @@
 
                 <StackPanel Grid.Row="1">
                     <StackPanel Orientation="Horizontal">
-                        <fa:IconImage Icon="Weixin" Foreground="Green" />
-                        <fa:IconImage Icon="Shop" Foreground="RoyalBlue"/>
-                        <fa:IconImage Icon="ShoppingBag" Foreground="YellowGreen" />
-                        <fa:IconImage Icon="Handshake" Foreground="RoyalBlue"/>
-                        <fa:IconImage Icon="Flag" Foreground="Red" />
-                        <fa:IconBlock Icon="LinkSlash" Foreground="DimGray"/>
-                        <Button Content="标签管理" Command="{Binding PopUpEditLinkMarkCommand}" />
+                        
+                        <fa:IconImage Icon="Weixin">
+                                <i:Interaction.Triggers>
+                                    <i:DataTrigger Binding="{Binding LinkMark.HasWeChat}" Value="true">
+                                        <i:ChangePropertyAction TargetObject="{Binding ElementName=weixinicon}"
+                                                           PropertyName="Foreground" Value="green"/>
+                                    </i:DataTrigger>
+                                    <i:DataTrigger Binding="{Binding LinkMark.HasWeChat}" Value="false">
+                                        <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                           PropertyName="Foreground" Value="gray"/>
+                                    </i:DataTrigger>
+                                </i:Interaction.Triggers>
+                            </fa:IconImage>
+
+                        <fa:IconImage Icon="Shop">
+                            <i:Interaction.Triggers>
+                                <i:DataTrigger Binding="{Binding LinkMark.HasArrived}" Value="true">
+                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                           PropertyName="Foreground" Value="royalblue"/>
+                                </i:DataTrigger>
+                                <i:DataTrigger Binding="{Binding LinkMark.HasArrived}" Value="false">
+                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                           PropertyName="Foreground" Value="gray"/>
+                                </i:DataTrigger>
+                            </i:Interaction.Triggers>
+                        </fa:IconImage>
+
+                        <fa:IconImage Icon="ShoppingBag">
+                            <i:Interaction.Triggers>
+                                <i:DataTrigger Binding="{Binding LinkMark.HasDeposit}" Value="true">
+                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                           PropertyName="Foreground" Value="royalblue"/>
+                                </i:DataTrigger>
+                                <i:DataTrigger Binding="{Binding LinkMark.HasDeposit}" Value="false">
+                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                           PropertyName="Foreground" Value="gray"/>
+                                </i:DataTrigger>
+                            </i:Interaction.Triggers>
+                        </fa:IconImage>
+                        
+                        <fa:IconImage Icon="Handshake" >
+                            <i:Interaction.Triggers>
+                                <i:DataTrigger Binding="{Binding LinkMark.HasContract}" Value="true">
+                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                           PropertyName="Foreground" Value="royalblue"/>
+                                </i:DataTrigger>
+                                <i:DataTrigger Binding="{Binding LinkMark.HasContract}" Value="false">
+                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                           PropertyName="Foreground" Value="gray"/>
+                                </i:DataTrigger>
+                            </i:Interaction.Triggers>
+                        </fa:IconImage>
+
+                        <fa:IconImage Icon="Flag">
+                            <i:Interaction.Triggers>
+                                <i:DataTrigger Binding="{Binding LinkMark.IsAttention}" Value="true">
+                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                           PropertyName="Foreground" Value="red"/>
+                                </i:DataTrigger>
+                                <i:DataTrigger Binding="{Binding LinkMark.IsAttention}" Value="false">
+                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                           PropertyName="Foreground" Value="gray"/>
+                                </i:DataTrigger>
+                            </i:Interaction.Triggers>
+                        </fa:IconImage>
+
+                        <fa:IconImage Icon="LinkSlash">
+                            <i:Interaction.Triggers>
+                                <i:DataTrigger Binding="{Binding LinkMark.IsLose}" Value="true">
+                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                           PropertyName="Foreground" Value="yellow"/>
+                                </i:DataTrigger>
+                                <i:DataTrigger Binding="{Binding LinkMark.IsLose}" Value="false">
+                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                           PropertyName="Foreground" Value="gray"/>
+                                </i:DataTrigger>
+                            </i:Interaction.Triggers>
+                            </fa:IconImage>
+                        
                     </StackPanel>
+                        
+                    <Button x:Name="btn_submitmark" Content="标签管理" Command="{Binding PopUpEditLinkMarkCommand}">
+                    </Button>
                 </StackPanel>
                 
             </Grid>
