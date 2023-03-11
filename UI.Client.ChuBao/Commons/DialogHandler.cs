@@ -38,7 +38,7 @@ namespace UI.Client.ChuBao.Commons
             dialog.ShowDialog();
         }
 
-        public void CreateDialog<TView>(string Title)
+        public void CreateDialog<TView>(string Title = "")
         {
             var dialog = new DialogWindow();
             var content = Activator.CreateInstance(typeof(TView));

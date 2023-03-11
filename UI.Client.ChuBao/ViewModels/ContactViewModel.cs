@@ -36,7 +36,10 @@ namespace UI.Client.ChuBao.ViewModels
 
             PopUpAddLinkCommand = new RelayCommand<string>(title =>
             _dialogHandler.CreateDialog<AddLinkItemDialog>("新增联系人"));
+
             PopUpEditLinkCommand = new RelayCommand<LinkDto>(l => ExecuteCreateEditLinkDialog(l));
+            PopUpEditLinkMarkCommand = new RelayCommand<MarkDto>(title =>
+            _dialogHandler.CreateDialog<EditLinkMarkDialog>($"{LinkItem!.Name} 的标签管理"));
 
 
             SubmitNewLinkItemCommand = new RelayCommand(ExcuteSubmitNewLinkItemAsync);
@@ -45,9 +48,8 @@ namespace UI.Client.ChuBao.ViewModels
             ShowLinkDetailViewCommand = new RelayCommand<LinkDto>(model => ExecuteShowLinkDetailView(model));
             SubmitNewLinkRecordCommand = new RelayCommand(ExcuteSubmitNewLinkRecordAsync);
 
-
-            // For Marks
             CheckLinkMarkCommand = new RelayCommand<string>(x => ExecuteEditLinkMarkAsync(x));
+
         }
 
 
@@ -61,13 +63,13 @@ namespace UI.Client.ChuBao.ViewModels
             {
                 var record = new RecordCreateDto 
                 { 
-                    ContactId = LinkItem.Id,
+                    ContactId = LinkItem!.Id,
                     Booker = "hyd",
-                    Content = $"修改标签： {markItem.ToString()} ；"
+                    Content = $"修改标签： {markItem} ；"
                 };
                 await _linkService.AddLinkRecordAsync(record);
             }
-            ExcuteLoadLinkRecordListAsync(LinkItem.Id);
+            ExcuteLoadLinkRecordListAsync(LinkItem!.Id);
         }
 
         private async void ExcuteSubmitNewLinkRecordAsync()
@@ -148,9 +150,8 @@ namespace UI.Client.ChuBao.ViewModels
         public RelayCommand<LinkDto> PopUpEditLinkCommand { get; set; }
         public RelayCommand SubmitNewLinkItemCommand { get; set; }
         public RelayCommand SubmitEditLinkItemCommand { get; set; }
-
-        // For Marks
         public RelayCommand<string> CheckLinkMarkCommand { get; set; }
+        public RelayCommand<MarkDto> PopUpEditLinkMarkCommand { get; set; }
 
         #endregion
 
