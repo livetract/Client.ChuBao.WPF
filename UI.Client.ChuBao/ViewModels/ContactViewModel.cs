@@ -37,7 +37,7 @@ namespace UI.Client.ChuBao.ViewModels
             PopUpAddLinkCommand = new RelayCommand<string>(title =>
             _dialogHandler.CreateDialog<AddLinkItemDialog>("新增联系人"));
 
-            PopUpEditLinkCommand = new RelayCommand<LinkDto>(l => ExecuteCreateEditLinkDialog(l));
+            PopUpEditLinkCommand = new RelayCommand<LinkDto>(model => ExecuteCreateEditLinkDialog(model!));
             PopUpEditLinkMarkCommand = new RelayCommand<MarkDto>(title =>
             _dialogHandler.CreateDialog<EditLinkMarkDialog>($"{LinkItem!.Name} 的标签管理"));
 
