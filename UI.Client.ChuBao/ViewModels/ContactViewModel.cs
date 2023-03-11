@@ -5,7 +5,7 @@ using Core.Client.ChuBao.Dtos;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Windows.Forms;
 using UI.Client.ChuBao.Commons;
 using UI.Client.ChuBao.Components;
@@ -88,7 +88,9 @@ namespace UI.Client.ChuBao.ViewModels
 
         private async void ExcuteLoadLinkRecordListAsync(Guid id)
         {
-            var records = await _linkService.GetRecordListAsync(id);
+            var records = (await _linkService.GetRecordListAsync(id))
+                .OrderByDescending(x => x.AddTime);
+
             Records = new ObservableCollection<RecordDto>(records);
         }
         private async void ExecuteShowLinkDetailView(LinkDto? model)
