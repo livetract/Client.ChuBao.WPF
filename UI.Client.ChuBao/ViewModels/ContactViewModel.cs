@@ -5,6 +5,7 @@ using Core.Client.ChuBao.Dtos;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using UI.Client.ChuBao.Commons;
 using UI.Client.ChuBao.Components;
@@ -27,6 +28,7 @@ namespace UI.Client.ChuBao.ViewModels
             this.LinkNewDto = new LinkCreateDto();
             this.LinkItem = new LinkDto();
             this.NewRecord = new RecordCreateDto();
+            this.LinkMark = new MarkDto();
 
             this.LinkDetailView = App.AppHost!.Services.GetRequiredService<DefaultBlankViewComponent>();
 
@@ -42,19 +44,39 @@ namespace UI.Client.ChuBao.ViewModels
 
             ShowLinkDetailViewCommand = new RelayCommand<LinkDto>(model => ExecuteShowLinkDetailView(model));
             SubmitNewLinkRecordCommand = new RelayCommand(ExcuteSubmitNewLinkRecordAsync);
+
+
+            // For Marks
+            CheckLinkMarkCommand = new RelayCommand<string>(x => ExecuteEditLinkMarkAsync(x));
         }
+
 
         #region Implements
 
 
+        private async void ExecuteEditLinkMarkAsync(string? markItem = null)
+        {
+            var result = await _linkService!.UpdateLinkMarkAsync(LinkMark!);
+            if (result)
+            {
+                var record = new RecordCreateDto 
+                { 
+                    ContactId = LinkItem.Id,
+                    Booker = "hyd",
+                    Content = $"修改标签： {markItem.ToString()} ；"
+                };
+                await _linkService.AddLinkRecordAsync(record);
+            }
+            ExcuteLoadLinkRecordListAsync(LinkItem.Id);
+        }
 
         private async void ExcuteSubmitNewLinkRecordAsync()
         {
             //if (string.IsNullOrEmpty(content)) //空值不允许提交，后面前台要进行约束;
             //    return;
             // dev时是写死的，后面要获取登录的用户名来替代
-            NewRecord.Booker = "hyd";
-            NewRecord.ContactId = LinkItem.Id;
+            NewRecord!.Booker = "hyd";
+            NewRecord.ContactId = LinkItem!.Id;
             var result = await _linkService.AddLinkRecordAsync(NewRecord);
             if (!result)
             {
@@ -69,9 +91,11 @@ namespace UI.Client.ChuBao.ViewModels
             var records = await _linkService.GetRecordListAsync(id);
             Records = new ObservableCollection<RecordDto>(records);
         }
-        private void ExecuteShowLinkDetailView(LinkDto? model)
+        private async void ExecuteShowLinkDetailView(LinkDto? model)
         {
             LinkItem = model!;
+            LinkMark = await _linkService.GetLinkMarkAsync(LinkItem.Id);
+
             var view = App.AppHost!.Services.GetRequiredService<LinkDetailComponent>();
             LinkDetailView = view;
             ExcuteLoadLinkRecordListAsync(model!.Id);
@@ -123,14 +147,17 @@ namespace UI.Client.ChuBao.ViewModels
         public RelayCommand SubmitNewLinkItemCommand { get; set; }
         public RelayCommand SubmitEditLinkItemCommand { get; set; }
 
+        // For Marks
+        public RelayCommand<string> CheckLinkMarkCommand { get; set; }
+
         #endregion
 
 
         #region ObservableObject
 
-        private ObservableCollection<LinkDto> _linkList;
+        private ObservableCollection<LinkDto>? _linkList;
 
-        public ObservableCollection<LinkDto> LinkList { get => _linkList; set => SetProperty(ref _linkList, value); }
+        public ObservableCollection<LinkDto>? LinkList { get => _linkList; set => SetProperty(ref _linkList, value); }
 
         private LinkCreateDto? _linkNewDto;
 
@@ -145,14 +172,16 @@ namespace UI.Client.ChuBao.ViewModels
 
         public object? LinkDetailView { get => _linkDetaiView; set => SetProperty(ref _linkDetaiView, value); }
 
-        private ObservableCollection<RecordDto> _records;
+        private ObservableCollection<RecordDto>? _records;
 
-        public ObservableCollection<RecordDto> Records { get => _records; set => SetProperty(ref _records, value); }
+        public ObservableCollection<RecordDto>? Records { get => _records; set => SetProperty(ref _records, value); }
 
-        private RecordCreateDto _newRecord;
+        private RecordCreateDto? _newRecord;
 
-        public RecordCreateDto NewRecord { get => _newRecord; set => SetProperty(ref _newRecord, value); }
-       
+        public RecordCreateDto? NewRecord { get => _newRecord; set => SetProperty(ref _newRecord, value); }
+
+        private MarkDto? _linkMark;
+        public MarkDto? LinkMark { get => _linkMark; set => SetProperty(ref _linkMark, value);}
 
 
 

@@ -32,28 +32,6 @@ namespace Access.Client.ChuBao
             return true;
         }
 
-        public async Task<bool> AddLinkRecordAsync(RecordCreateDto model)
-        {
-            var url = _client.BaseAddress + "addcontactrecord";
-            var reponse = await _client.PostAsJsonAsync(url,model,
-                new JsonSerializerOptions(JsonSerializerDefaults.Web)); 
-            if (!reponse.IsSuccessStatusCode ) { return false; }
-            return true;
-        }
-
-        public async Task<IEnumerable<RecordDto>> GetRecordListAsync(Guid contactId)
-        {
-            var url = _client.BaseAddress + "getcontactrecords";
-            var reponse = await _client.PostAsJsonAsync(url, contactId,
-                new JsonSerializerOptions(JsonSerializerDefaults.Web));
-            if (!reponse.IsSuccessStatusCode )
-            {
-                return Enumerable.Empty<RecordDto>();
-            }
-            var records = await reponse.Content.ReadFromJsonAsync<List<RecordDto>>();
-            return records;
-        }
-
         public Task<LinkDto> LoadLinkAsync()
         {
             throw new NotImplementedException();
@@ -79,6 +57,53 @@ namespace Access.Client.ChuBao
             var reponse = await _client.PutAsJsonAsync(url, model,
                 new JsonSerializerOptions(JsonSerializerDefaults.Web)); 
             return reponse.IsSuccessStatusCode ? true : false;
+        }
+
+        // Contact Record
+
+        public async Task<bool> AddLinkRecordAsync(RecordCreateDto model)
+        {
+            var url = _client.BaseAddress + "addcontactrecord";
+            var reponse = await _client.PostAsJsonAsync(url, model,
+                new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            if (!reponse.IsSuccessStatusCode) { return false; }
+            return true;
+        }
+
+        public async Task<IEnumerable<RecordDto>> GetRecordListAsync(Guid contactId)
+        {
+            var url = _client.BaseAddress + "getcontactrecords";
+            var reponse = await _client.PostAsJsonAsync(url, contactId,
+                new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            if (!reponse.IsSuccessStatusCode)
+            {
+                return Enumerable.Empty<RecordDto>();
+            }
+            var records = await reponse.Content.ReadFromJsonAsync<List<RecordDto>>(new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            return records;
+        }
+
+        // Contact Mark
+        public async Task<MarkDto> GetLinkMarkAsync(Guid contactId)
+        {
+            var url = _client.BaseAddress + "getcontactmark";
+            var reponse = await _client.PostAsJsonAsync(url, contactId,
+                new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            if (!reponse.IsSuccessStatusCode)
+            {
+                // ...
+            }
+            var mark = await reponse.Content.ReadFromJsonAsync<MarkDto>(new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            return mark;
+        }
+
+        public async Task<bool> UpdateLinkMarkAsync(MarkDto model)
+        {
+            var url = _client.BaseAddress + "updatecontactmark";
+            var reponse = await _client.PutAsJsonAsync(url, model,
+                new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            if (!reponse.IsSuccessStatusCode) {  return false; }
+            return true;
         }
     }
 }
