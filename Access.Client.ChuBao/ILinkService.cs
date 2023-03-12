@@ -17,5 +17,6 @@ namespace Access.Client.ChuBao
         Task<bool> AddLinkRecordAsync(RecordCreateDto model);
         public Task<MarkDto> GetLinkMarkAsync(Guid contactId);
         public Task<bool> UpdateLinkMarkAsync(MarkDto model);
+        public Task<IEnumerable<ContactAMark>> LoadLinkAndMarkListAsync();
     }
 }

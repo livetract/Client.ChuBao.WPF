@@ -19,7 +19,17 @@ namespace Access.Client.ChuBao
         }
 
         
-
+        public async Task<IEnumerable<ContactAMark>> LoadLinkAndMarkListAsync()
+        {
+            var url = _client.BaseAddress + "GetContactWithMarks";
+            var reponse = await _client.GetAsync(url);
+            if (!reponse.IsSuccessStatusCode)
+            {
+                // ...
+            }
+            var result = await reponse.Content.ReadFromJsonAsync<List<ContactAMark>>(new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            return result;
+        }
         public async Task<bool> AddLinkAsync(LinkCreateDto model)
         {
             var url = _client.BaseAddress + "createcontact";
@@ -105,7 +115,5 @@ namespace Access.Client.ChuBao
             if (!reponse.IsSuccessStatusCode) {  return false; }
             return true;
         }
-
-        
     }
 }

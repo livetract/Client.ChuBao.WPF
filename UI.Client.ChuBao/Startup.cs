@@ -12,7 +12,7 @@ using UI.Client.ChuBao.Views;
 
 namespace UI.Client.ChuBao
 {
-    internal class Startup
+    public class Startup
     {
 
         public IConfiguration Configuration { get; }

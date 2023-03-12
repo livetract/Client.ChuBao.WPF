@@ -32,12 +32,13 @@ namespace UI.Client.ChuBao.ViewModels
 
             this.LinkDetailView = App.AppHost!.Services.GetRequiredService<DefaultBlankViewComponent>();
 
-            ExecuteLoadLinkListAsync();
+            //ExecuteLoadLinkListAsync();
+            ExecuteLoadLinkAndMarkListAsync();
 
             PopUpAddLinkCommand = new RelayCommand<string>(title =>
             _dialogHandler.CreateDialog<AddLinkItemDialog>("新增联系人"));
 
-            PopUpEditLinkCommand = new RelayCommand<LinkDto>(model => ExecuteCreateEditLinkDialog(model!));
+            PopUpEditLinkCommand = new RelayCommand<ContactAMark>(model => ExecuteCreateEditLinkDialog(model!));
             PopUpEditLinkMarkCommand = new RelayCommand<MarkDto>(title =>
             _dialogHandler.CreateDialog<EditLinkMarkDialog>($"{LinkItem!.Name} 的标签管理"));
 
@@ -45,7 +46,7 @@ namespace UI.Client.ChuBao.ViewModels
             SubmitNewLinkItemCommand = new RelayCommand(ExcuteSubmitNewLinkItemAsync);
             SubmitEditLinkItemCommand = new RelayCommand(ExcuteSubmitEditLinkItemAsync);
 
-            ShowLinkDetailViewCommand = new RelayCommand<LinkDto>(model => ExecuteShowLinkDetailView(model));
+            ShowLinkDetailViewCommand = new RelayCommand<ContactAMark>(model => ExecuteShowLinkDetailView(model));
             SubmitNewLinkRecordCommand = new RelayCommand(ExcuteSubmitNewLinkRecordAsync);
 
             CheckLinkMarkCommand = new RelayCommand<string>(x => ExecuteEditLinkMarkAsync(x));
@@ -53,9 +54,14 @@ namespace UI.Client.ChuBao.ViewModels
         }
 
 
+
         #region Implements
+        private async void ExecuteLoadLinkAndMarkListAsync()
+        {
+            var result = await _linkService!.LoadLinkAndMarkListAsync();
 
-
+            LinkAndMarkList = new ObservableCollection<ContactAMark>(result);
+        }
         private async void ExecuteEditLinkMarkAsync(string? markItem = null)
         {
             var result = await _linkService!.UpdateLinkMarkAsync(LinkMark!);
@@ -82,22 +88,35 @@ namespace UI.Client.ChuBao.ViewModels
 
             Records = new ObservableCollection<RecordDto>(records);
         }
-        private async void ExecuteShowLinkDetailView(LinkDto? model)
+        private async void ExecuteShowLinkDetailView(ContactAMark? model)
         {
             if (model == null)
             {
                 return;
             }
-
-            LinkItem = model!;
+            LinkItem = new LinkDto
+            {
+                Id = model.ContactId,
+                Name = model.Name,
+                Phone = model.Phone,
+                Complex = model.Complex,
+                Door = model.Door
+            };
             LinkMark = await _linkService.GetLinkMarkAsync(LinkItem.Id);
             LinkDetailView = App.AppHost!.Services.GetRequiredService<LinkDetailComponent>();
-            ExcuteLoadLinkRecordListAsync(model!.Id);
+            ExcuteLoadLinkRecordListAsync(LinkItem.Id);
         }
 
-        private void ExecuteCreateEditLinkDialog(LinkDto model)
+        private void ExecuteCreateEditLinkDialog(ContactAMark model)
         {
-            LinkItem = model!;
+            LinkItem = new LinkDto
+            {
+                Id = model.ContactId,
+                Name = model.Name,
+                Phone = model.Phone,
+                Complex = model.Complex,
+                Door = model.Door
+            };
 
             _dialogHandler.CreateDialog<EditLinkItemDialog>($"正在修改{model!.Name}的信息");
         }
@@ -136,10 +155,10 @@ namespace UI.Client.ChuBao.ViewModels
 
         #region Commands
         public RelayCommand SubmitNewLinkRecordCommand { get; set; }
-        public RelayCommand<LinkDto> ShowLinkDetailViewCommand { get; set; }
+        public RelayCommand<ContactAMark> ShowLinkDetailViewCommand { get; set; }
 
         public RelayCommand<string> PopUpAddLinkCommand { get; set; }
-        public RelayCommand<LinkDto> PopUpEditLinkCommand { get; set; }
+        public RelayCommand<ContactAMark> PopUpEditLinkCommand { get; set; }
         public RelayCommand SubmitNewLinkItemCommand { get; set; }
         public RelayCommand SubmitEditLinkItemCommand { get; set; }
         public RelayCommand<string> CheckLinkMarkCommand { get; set; }
@@ -177,7 +196,8 @@ namespace UI.Client.ChuBao.ViewModels
 
         private MarkDto? _linkMark;
         public MarkDto? LinkMark { get => _linkMark; set => SetProperty(ref _linkMark, value);}
-
+        private ObservableCollection<ContactAMark>? _linkAndMarkList;
+        public ObservableCollection<ContactAMark>? LinkAndMarkList { get => _linkAndMarkList; set =>  SetProperty(ref _linkAndMarkList, value); }
 
 
         #endregion
