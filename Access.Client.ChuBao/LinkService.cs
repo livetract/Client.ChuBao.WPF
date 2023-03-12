@@ -105,5 +105,7 @@ namespace Access.Client.ChuBao
             if (!reponse.IsSuccessStatusCode) {  return false; }
             return true;
         }
+
+        
     }
 }

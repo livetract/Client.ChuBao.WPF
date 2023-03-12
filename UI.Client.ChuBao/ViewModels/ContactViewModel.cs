@@ -59,16 +59,7 @@ namespace UI.Client.ChuBao.ViewModels
         private async void ExecuteEditLinkMarkAsync(string? markItem = null)
         {
             var result = await _linkService!.UpdateLinkMarkAsync(LinkMark!);
-            if (result)
-            {
-                var record = new RecordCreateDto 
-                { 
-                    ContactId = LinkItem!.Id,
-                    Booker = "hyd",
-                    Content = $"修改标签： {markItem} ；"
-                };
-                await _linkService.AddLinkRecordAsync(record);
-            }
+            
             ExcuteLoadLinkRecordListAsync(LinkItem!.Id);
         }
 
@@ -123,9 +114,11 @@ namespace UI.Client.ChuBao.ViewModels
 
         private async void ExcuteSubmitNewLinkItemAsync()
         {
-            await _linkService.AddLinkAsync(LinkNewDto!);
-            // add record for this link
+            //if (LinkNewDto == null) return;
 
+            LinkNewDto!.Booker = "hyd";
+
+            await _linkService.AddLinkAsync(LinkNewDto!);
 
             LinkNewDto = null;
 
