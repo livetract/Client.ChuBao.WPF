@@ -40,8 +40,13 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
-            
-            <Grid>
+
+            <Border x:Name="border_caption"
+                    Grid.Row="0"
+                    Background="White"
+                    BorderThickness="0.3"
+                    BorderBrush="Black">
+
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
                         <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
@@ -49,17 +54,36 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=Title}" 
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center"
-                           Margin="10 0 0 0"
-                           FontSize="14"/>
-                <Button HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        IsCancel="True">
-                    <fa:IconImage Icon="Xmark" />
-                </Button>
-            </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="35"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock x:Name="title_text"
+                               Grid.Column="0"
+                       Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Title}"
+                       VerticalAlignment="Center"
+                               HorizontalAlignment="Left">
+
+                    </TextBlock>
+                    <Button x:Name="close" 
+                            Grid.Column="1" 
+                            IsCancel="True"
+                            Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
+                            Height="30"
+                            VerticalAlignment="Center">
+                        <fa:IconImage Icon="WindowClose" />
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                            MethodName="Close"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                </Grid>
+            </Border> 
+            
             <StackPanel Grid.Row="1" Margin="0 10 0 0">
                 <Border>
                     <Grid>

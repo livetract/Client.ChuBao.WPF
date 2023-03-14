@@ -13,7 +13,26 @@
              Width="500" Height="400"
              >
 
-    <Border Background="Snow">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="10 0 0 0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+    </UserControl.Resources>
+
+
+    <Border Background="White"
+            BorderBrush="Black"
+            BorderThickness="0.5">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
@@ -21,17 +40,11 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <Grid x:Name="topbar" Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="35"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock x:Name="title_text"
-                       Grid.Column="0" 
-                       Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Title}"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center">
+            <Border x:Name="border_caption"
+                    Grid.Row="0"
+                    Background="White"
+                    BorderThickness="0.3"
+                    BorderBrush="Black">
 
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
@@ -40,55 +53,83 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-                </TextBlock>
-                <Button x:Name="close" 
-                    Grid.Column="1" 
-                    IsCancel="True">
-                    <fa:IconImage Icon="WindowClose" />
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="Click">
-                            <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="35"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock x:Name="title_text"
+                               Grid.Column="0"
+                       Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Title}"
+                       VerticalAlignment="Center"
+                               HorizontalAlignment="Left">
+
+                    </TextBlock>
+                    <Button x:Name="close" 
+                            Grid.Column="1" 
+                            IsCancel="True"
+                            Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
+                            Height="30"
+                            VerticalAlignment="Center">
+                        <fa:IconImage Icon="WindowClose" />
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
                                             MethodName="Close"/>
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </Button>
-            </Grid>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                </Grid>
+            </Border>
 
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
+            <Border Grid.Row="1">
+                <Grid Margin="0 20 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
 
-                <TextBlock Grid.Column="0" Grid.Row="0" Text="姓名："/>
-                <TextBlock Grid.Column="0" Grid.Row="1" Text="电话："/>
-                <TextBlock Grid.Column="0" Grid.Row="2" Text="小区："/>
-                <TextBlock Grid.Column="0" Grid.Row="3" Text="门牌："/>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="姓名："/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="电话："/>
+                    <TextBlock Grid.Column="0" Grid.Row="2" Text="小区："/>
+                    <TextBlock Grid.Column="0" Grid.Row="3" Text="门牌："/>
 
 
-                <TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding LinkItem.Name, Mode=TwoWay}"/>
-                <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding LinkItem.Phone, Mode=TwoWay}"/>
-                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding LinkItem.Complex, Mode=TwoWay}"/>
-                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding LinkItem.Door, Mode=TwoWay}"/>
-            </Grid>
+                    <TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding LinkItem.Name, Mode=TwoWay}"/>
+                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding LinkItem.Phone, Mode=TwoWay}"/>
+                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding LinkItem.Complex, Mode=TwoWay}"/>
+                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding LinkItem.Door, Mode=TwoWay}"/>
+                </Grid>
+            </Border>
 
-            <Button Content="Submit" Grid.Row="2" 
+            <Border Grid.Row="2">
+                <Grid Margin="0 20 0 0">
+                    <Button Content="Submit"
+                    Height="35"
+                        Width="250"
+                        VerticalAlignment="Top"    
                     Command="{Binding SubmitEditLinkItemCommand}"
                     >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
                                             MethodName="Close"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                </Grid>
+            </Border>
+
+
+            
 
         </Grid>
     </Border>
