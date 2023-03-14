@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Forms;
 using UI.Client.ChuBao.Commons;
 using UI.Client.ChuBao.Components;
 using UI.Client.ChuBao.Dialogs;
