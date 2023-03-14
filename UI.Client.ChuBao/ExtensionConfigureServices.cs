@@ -1,0 +1,52 @@
+﻿using Access.Client.ChuBao;
+using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Headers;
+using System;
+using UI.Client.ChuBao.Components;
+using UI.Client.ChuBao.Dialogs;
+using UI.Client.ChuBao.ViewModels;
+using UI.Client.ChuBao.Views;
+using Microsoft.Extensions.Configuration;
+using UI.Client.ChuBao.Commons;
+
+namespace UI.Client.ChuBao
+{
+    public static class ExtensionConfigureServices
+    {
+        public static void ConfigureViewModels(this IServiceCollection services)
+        {
+            services.AddTransient<MainViewModel>();
+            services.AddScoped<DialogWindow>();
+
+            services.AddScoped<ContactViewModel>();
+            services.AddScoped<DashboardViewModel>();
+        }
+
+        public static void ConfigureViews(this IServiceCollection services)
+        {
+            services.AddTransient<MainWindow>();
+            services.AddScoped<ContactView>();
+            services.AddScoped<DashboardView>();
+
+            services.AddScoped<DefaultBlankViewComponent>();
+            services.AddScoped<LinkDetailComponent>();
+
+            services.AddScoped<AddLinkItemDialog>();
+            services.AddScoped<EditLinkItemDialog>();
+            services.AddScoped<EditLinkMarkDialog>();
+        }
+
+        public static void ConfigureCustomServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddScoped<IDialogHandler,DialogHandler>();
+
+            services.AddHttpClient<ILinkService, LinkService>(
+                http =>
+                {
+                    http.BaseAddress = new Uri(configuration.GetSection("Endpoints:Contact").Value ?? "");
+                    http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    http.DefaultRequestHeaders.UserAgent.TryParseAdd("wpf-client-chubao");
+                });
+        }
+    }
+}

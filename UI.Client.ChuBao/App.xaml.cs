@@ -2,6 +2,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Windows;
+using Serilog;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace UI.Client.ChuBao
 {
@@ -13,11 +16,16 @@ namespace UI.Client.ChuBao
         public static IHost? AppHost { get; private set; }
         public App()
         {
-            var builder = Host.CreateApplicationBuilder();
+            var builder = Host.CreateDefaultBuilder();
+            builder.UseSerilog((host,loggerConfiguration) =>
+            {
+                loggerConfiguration
+                .WriteTo
+                .File(path: "Logs/log", rollingInterval: RollingInterval.Day);
+            });
+            builder.ConfigureServices(ConfigureServices);
+            builder.ConfigureAppConfiguration(ConfigureAppConfiguration);
 
-
-            var startup = new Startup(builder.Configuration);
-            startup.ConfigureServices(builder.Services);
 
             AppHost= builder.Build();
             
@@ -25,6 +33,27 @@ namespace UI.Client.ChuBao
             AppHost.RunAsync();
         }
 
+        private void ConfigureAppConfiguration(HostBuilderContext context, IConfigurationBuilder builder)
+        {
+            var env = context.HostingEnvironment;
+
+            builder.Sources.Clear();
+
+            builder.SetBasePath(Directory.GetCurrentDirectory());
+            builder
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
+            builder.AddEnvironmentVariables();
+
+            builder.Build();
+        }
+
+        private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
+        {
+            services.ConfigureViews();
+            services.ConfigureViewModels();
+            services.ConfigureCustomServices(context.Configuration);
+        }
 
         protected override async void OnStartup(StartupEventArgs e)
         {

@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using UI.Client.ChuBao.Components;
 using UI.Client.ChuBao.Views;
 
@@ -8,7 +9,9 @@ namespace UI.Client.ChuBao.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
-        public MainViewModel()
+        private readonly ILogger<MainViewModel> _logger;
+
+        public MainViewModel(ILogger<MainViewModel> logger)
         {
             CurrentView = App.AppHost!.Services.GetRequiredService<DefaultBlankViewComponent>();
 
@@ -16,6 +19,7 @@ namespace UI.Client.ChuBao.ViewModels
             NavigateToDashboardCommand = new RelayCommand(() =>{
                 CurrentView = App.AppHost!.Services.GetRequiredService<DashboardView>();
             });
+            this._logger = logger;
         }
 
 
@@ -23,6 +27,7 @@ namespace UI.Client.ChuBao.ViewModels
 
         private void ExecuteToContactList()
         {
+            _logger.LogInformation("打开联系人列表");
             CurrentView = App.AppHost!.Services.GetRequiredService<ContactView>();
         }
 
@@ -39,13 +44,8 @@ namespace UI.Client.ChuBao.ViewModels
 
         #region ObservableObject
 
-        private object _currentView;
-
-        public object CurrentView
-        {
-            get => _currentView;
-            set => SetProperty(ref _currentView, value);
-        }
+        private object? _currentView;
+        public object? CurrentView { get => _currentView; set => SetProperty(ref _currentView, value); }
 
 
 
