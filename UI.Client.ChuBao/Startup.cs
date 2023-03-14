@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.IO;
 using System.Net.Http.Headers;
 using UI.Client.ChuBao.Commons;
 using UI.Client.ChuBao.Components;
@@ -31,6 +32,7 @@ namespace UI.Client.ChuBao
 
             services.AddScoped<ContactView>();
             services.AddScoped<ContactViewModel>();
+            services.AddScoped<DashboardView>();
 
             services.AddScoped<AddLinkItemDialog>();
             services.AddScoped<EditLinkItemDialog>();
@@ -52,6 +54,7 @@ namespace UI.Client.ChuBao
         {
             builder.Sources.Clear();
 
+            builder.SetBasePath(Directory.GetCurrentDirectory());
             builder
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);

@@ -110,7 +110,8 @@
 
                 <StackPanel x:Name="menubar"
                       Grid.Column="0">
-                    <Button Content="Dashbord" />
+                    <Button Content="Dashbord" 
+                            Command="{Binding NavigateToDashboardCommand}"/>
                     <Button Content="ContactList" 
                                   Command="{Binding NavigateToContactListCommand}"/>
 

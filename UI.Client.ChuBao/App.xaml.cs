@@ -15,13 +15,13 @@ namespace UI.Client.ChuBao
         {
             var builder = Host.CreateApplicationBuilder();
 
+
             var startup = new Startup(builder.Configuration);
             startup.ConfigureServices(builder.Services);
-            //startup.ConfigureApplication(builder.Environment, builder.Configuration); // 可以不需要显式调用IConfigurationBuild
-
-            
 
             AppHost= builder.Build();
+            
+
             AppHost.RunAsync();
         }
 

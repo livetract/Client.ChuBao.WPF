@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using UI.Client.ChuBao.Components;
 using UI.Client.ChuBao.Views;
 
 namespace UI.Client.ChuBao.ViewModels
@@ -9,8 +10,12 @@ namespace UI.Client.ChuBao.ViewModels
     {
         public MainViewModel()
         {
-            CurrentView = null;
+            CurrentView = App.AppHost!.Services.GetRequiredService<DefaultBlankViewComponent>();
+
             NavigateToContactListCommand = new RelayCommand(ExecuteToContactList);
+            NavigateToDashboardCommand = new RelayCommand(() =>{
+                CurrentView = App.AppHost!.Services.GetRequiredService<DashboardView>();
+            });
         }
 
 
@@ -18,7 +23,6 @@ namespace UI.Client.ChuBao.ViewModels
 
         private void ExecuteToContactList()
         {
-
             CurrentView = App.AppHost!.Services.GetRequiredService<ContactView>();
         }
 
