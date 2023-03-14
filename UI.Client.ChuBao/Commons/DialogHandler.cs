@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace UI.Client.ChuBao.Commons
 {
@@ -38,12 +39,13 @@ namespace UI.Client.ChuBao.Commons
             dialog.ShowDialog();
         }
 
-        public void CreateDialog<TView>(string Title = "")
+        public void CreateDialog<TView>(string Title = "", Window? window = null)
         {
             var dialog = new DialogWindow();
             var content = Activator.CreateInstance(typeof(TView));
             dialog.Content = content;
             dialog.Title = Title;
+            dialog.Owner = window;
             dialog.ShowDialog();
         }
     }

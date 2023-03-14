@@ -36,11 +36,11 @@ namespace UI.Client.ChuBao.ViewModels
             ExecuteLoadLinkAndMarkListAsync();
 
             PopUpAddLinkCommand = new RelayCommand<string>(title =>
-            _dialogHandler.CreateDialog<AddLinkItemDialog>("新增联系人"));
+            _dialogHandler.CreateDialog<AddLinkItemDialog>("新增联系人", App.Current.MainWindow));
 
             PopUpEditLinkCommand = new RelayCommand<ContactAMark>(model => ExecuteCreateEditLinkDialog(model!));
             PopUpEditLinkMarkCommand = new RelayCommand<MarkDto>(title =>
-            _dialogHandler.CreateDialog<EditLinkMarkDialog>($"{LinkItem!.Name} 的标签管理"));
+            _dialogHandler.CreateDialog<EditLinkMarkDialog>($"标签管理", App.Current.MainWindow));
 
 
             SubmitNewLinkItemCommand = new RelayCommand(ExcuteSubmitNewLinkItemAsync);
@@ -118,7 +118,7 @@ namespace UI.Client.ChuBao.ViewModels
                 Door = model.Door
             };
 
-            _dialogHandler.CreateDialog<EditLinkItemDialog>($"正在修改{model!.Name}的信息");
+            _dialogHandler.CreateDialog<EditLinkItemDialog>($"修改信息", App.Current.MainWindow);
         }
 
         private async void ExcuteSubmitEditLinkItemAsync()
