@@ -19,12 +19,12 @@
         BorderThickness="0"
         Background="Transparent"
         AllowsTransparency="True"
-        
         >
+    <Window.Resources>
 
-    <Border BorderThickness="0.5"
-            BorderBrush="Black"
-            Background="White">
+    </Window.Resources>
+
+    <Border Style="{DynamicResource BorderCustomStyle.Primary}">
 
         <Grid>
             <Grid.RowDefinitions>
@@ -33,9 +33,8 @@
                 <RowDefinition Height="35"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0"
-                    BorderThickness="0.3"
-                    BorderBrush="Black">
+            <Border Style="{DynamicResource BorderCustomStyle.Secondary}" 
+                    Grid.Row="0">
 
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
@@ -43,7 +42,7 @@
                                                 MethodName="DragMove"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-                
+
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="35"/>
@@ -64,9 +63,10 @@
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
 
-                    <Button x:Name="btn_control_minimize"
-                        Grid.Column="4">
-                        <fa:IconImage Icon="WindowMinimize"/>
+                    <Button Style="{DynamicResource CustomButtonStyle.Control.NonThickness}" x:Name="btn_control_minimize"
+                        Grid.Column="4"
+                            Margin="2">
+                        <fa:IconImage Icon="WindowMinimize" Foreground="RoyalBlue"/>
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
@@ -75,13 +75,60 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Button>
+                    
                     <Button x:Name="btn_control_maximize"
-                        Grid.Column="5">
-                        <fa:IconImage Icon="WindowMaximize"/>
+                            Style="{DynamicResource CustomButtonStyle.Control.NonThickness}"
+                        Grid.Column="5"
+                            Height="30"
+                            Margin=" 0 2 2 2" >
+                        <fa:IconImage Icon="Maximize" Foreground="RoyalBlue" />
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        PropertyName="WindowState"
+                                                        Value="{x:Static WindowState.Maximized}"/>
+                            </i:EventTrigger>
+                            <i:DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=WindowState}" Value="Maximized">
+                                <i:ChangePropertyAction TargetObject="{Binding ElementName=btn_control_maximize}"
+                                                        PropertyName="Visibility" Value="Hidden"/>
+                            </i:DataTrigger>
+                            <i:DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=WindowState}" Value="Normal">
+                                <i:ChangePropertyAction TargetObject="{Binding ElementName=btn_control_maximize}"
+                                                        PropertyName="Visibility" Value="Visible"/>
+                            </i:DataTrigger>
+                        </i:Interaction.Triggers>
                     </Button>
+                    
+                    <Button x:Name="btn_control_normal"
+                            Style="{DynamicResource CustomButtonStyle.Control.NonThickness}"
+                            Grid.Column="5"
+                            Height="30"
+                            Margin=" 0 2 2 2" >
+                        <fa:IconImage Icon="Minimize" Foreground="RoyalBlue" />
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        PropertyName="WindowState"
+                                                        Value="{x:Static WindowState.Normal}"/>
+                            </i:EventTrigger>
+                            <i:DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=WindowState}" Value="Maximized">
+                                <i:ChangePropertyAction TargetObject="{Binding ElementName=btn_control_normal}"
+                                                        PropertyName="Visibility" Value="Visible"/>
+                            </i:DataTrigger>
+                            <i:DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=WindowState}" Value="Normal">
+                                <i:ChangePropertyAction TargetObject="{Binding ElementName=btn_control_normal}"
+                                                        PropertyName="Visibility" Value="Hidden"/>
+                            </i:DataTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    
                     <Button x:Name="btn_control_close"
-                        Grid.Column="6">
-                        <fa:IconImage Icon="WindowClose"/>
+                            Style="{DynamicResource CustomButtonStyle.Control.NonThickness}"
+                        Grid.Column="6"
+                            Margin="0 2 2 2"
+                            Background="Red"
+                            FontStretch="SemiCondensed">
+                        <fa:IconImage Icon="Xmark" Foreground="White" />
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
@@ -96,17 +143,17 @@
                     <Border Grid.Column="3">
                         <TextBlock Text="" />
                     </Border>
-                    
+
                 </Grid>
             </Border>
-                
-            
-                <Grid x:Name="body"
+
+
+            <Grid x:Name="body"
                       Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition MaxWidth="200"/>
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MaxWidth="200"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
                 <StackPanel x:Name="menubar"
                       Grid.Column="0">
@@ -123,7 +170,7 @@
                                   Content="{Binding CurrentView}"/>
 
             </Grid>
-                    
+
             <Border x:Name="border_bottom"
                     Grid.Row="2">
                 <TextBlock Text="Be Comming..." />
@@ -131,6 +178,6 @@
 
 
         </Grid>
-        
+
     </Border>
 </Window>

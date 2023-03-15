@@ -7,6 +7,9 @@
             <ResourceDictionary.MergedDictionaries >
                 <ResourceDictionary Source="styles/listboxcustomstyle.xaml" />
                 <ResourceDictionary Source="styles/textblockcustomstyle.xaml" />
+                <ResourceDictionary Source="styles/boardcustomstyle.xaml" />
+                <ResourceDictionary Source="styles/customsolidcolorbrush.xaml" />
+                <ResourceDictionary Source="styles/CustomButtonStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
          

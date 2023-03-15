@@ -8,6 +8,7 @@ using UI.Client.ChuBao.ViewModels;
 using UI.Client.ChuBao.Views;
 using Microsoft.Extensions.Configuration;
 using UI.Client.ChuBao.Commons;
+using System.Windows.Data;
 
 namespace UI.Client.ChuBao
 {
@@ -39,6 +40,8 @@ namespace UI.Client.ChuBao
         public static void ConfigureCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IDialogHandler,DialogHandler>();
+
+
 
             services.AddHttpClient<ILinkService, LinkService>(
                 http =>

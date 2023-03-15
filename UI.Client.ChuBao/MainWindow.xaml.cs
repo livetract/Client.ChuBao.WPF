@@ -20,7 +20,7 @@ namespace UI.Client.ChuBao
             this.Title = result;
 
             this.DataContext = App.AppHost!.Services.GetRequiredService<MainViewModel>();
-
+            
             InitializeComponent();
         }
 
