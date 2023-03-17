@@ -2,8 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:UI.Client.ChuBao.Dialogs"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
@@ -30,9 +29,7 @@
     </UserControl.Resources>
     
 
-    <Border Background="White"
-            BorderThickness="0.5"
-            BorderBrush="Black">
+    <Border Style="{DynamicResource BorderCustomStyle.Primary}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
@@ -42,9 +39,7 @@
 
             <Border x:Name="border_caption"
                     Grid.Row="0"
-                    Background="White"
-                    BorderThickness="0.3"
-                    BorderBrush="Black">
+                    Style="{DynamicResource BorderCustomStyle.NonThickness}">
 
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
@@ -69,10 +64,9 @@
                     <Button x:Name="close" 
                             Grid.Column="1" 
                             IsCancel="True"
-                            Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
-                            Height="30"
-                            VerticalAlignment="Center">
-                        <fa:IconImage Icon="WindowClose" />
+                            Style="{DynamicResource CustomButtonStyle.NonThickness.Control.Close}"
+                            >
+                        <fa:IconImage Icon="Xmark" Foreground="Crimson" />
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
@@ -103,18 +97,19 @@
                     <TextBlock Grid.Column="0" Grid.Row="2" Text="小区："/>
                     <TextBlock Grid.Column="0" Grid.Row="3" Text="门牌："/>
 
-                    <TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding LinkNewDto.Name, Mode=TwoWay}"/>
-                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding LinkNewDto.Phone, Mode=TwoWay}"/>
-                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding LinkNewDto.Complex, Mode=TwoWay}"/>
-                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding LinkNewDto.Door, Mode=TwoWay}"/>
+                    <TextBox Template="{DynamicResource CustomTextBoxTemplate.Thickness.Single}" Grid.Column="1" Grid.Row="0"  Text="{Binding NewLink.Name, Mode=TwoWay}"/>
+                    <TextBox Template="{DynamicResource CustomTextBoxTemplate.Thickness.Single}" Grid.Column="1" Grid.Row="1" Text="{Binding NewLink.Phone, Mode=TwoWay}"/>
+                    <TextBox Template="{DynamicResource CustomTextBoxTemplate.Thickness.Single}" Grid.Column="1" Grid.Row="2" Text="{Binding NewLink.Complex, Mode=TwoWay}"/>
+                    <TextBox Template="{DynamicResource CustomTextBoxTemplate.Thickness.Single}" Grid.Column="1" Grid.Row="3" Text="{Binding NewLink.Door, Mode=TwoWay}"/>
                 </Grid>
             </Border>
 
             <Border Grid.Row="2"
                     Margin="0 20 0 0">
-                <Button Content="提交" 
-                    Command="{Binding SubmitNewLinkItemCommand}"
-                    Height="35"
+                <Button Content="提交"
+                        Command="{Binding SubmitNewLinkItemCommand}"
+                        Style="{DynamicResource CustomButtonStyle.Primary}"
+                        Height="30"
                         Width="250"
                         VerticalAlignment="Top">
                     <i:Interaction.Triggers>

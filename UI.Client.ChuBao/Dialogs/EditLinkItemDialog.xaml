@@ -29,9 +29,7 @@
     </UserControl.Resources>
 
 
-    <Border Background="White"
-            BorderBrush="Black"
-            BorderThickness="0.5">
+    <Border Style="{DynamicResource BorderCustomStyle.Primary}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
@@ -41,10 +39,8 @@
 
             <Border x:Name="border_caption"
                     Grid.Row="0"
-                    Background="White"
-                    BorderThickness="0.3"
-                    BorderBrush="Black">
-
+                    Style="{DynamicResource BorderCustomStyle.NonThickness}">
+                <!--必须放这里哦，不然没有办法拖动-->
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseLeftButtonDown">
                         <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
@@ -60,18 +56,15 @@
 
                     <TextBlock x:Name="title_text"
                                Grid.Column="0"
-                       Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Title}"
-                       VerticalAlignment="Center"
-                               HorizontalAlignment="Left">
+                               Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Title}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left" />
 
-                    </TextBlock>
                     <Button x:Name="close" 
                             Grid.Column="1" 
                             IsCancel="True"
-                            Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
-                            Height="30"
-                            VerticalAlignment="Center">
-                        <fa:IconImage Icon="WindowClose" />
+                            Style="{DynamicResource CustomButtonStyle.NonThickness.Control.Close}">
+                        <fa:IconImage Icon="Xmark" Foreground="Crimson" />
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
@@ -102,19 +95,20 @@
                     <TextBlock Grid.Column="0" Grid.Row="3" Text="门牌："/>
 
 
-                    <TextBox Grid.Column="1" Grid.Row="0"  Text="{Binding LinkItem.Name, Mode=TwoWay}"/>
-                    <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding LinkItem.Phone, Mode=TwoWay}"/>
-                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding LinkItem.Complex, Mode=TwoWay}"/>
-                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding LinkItem.Door, Mode=TwoWay}"/>
+                    <TextBox Template="{DynamicResource CustomTextBoxTemplate.Thickness.Single}" Grid.Column="1" Grid.Row="0"  Text="{Binding EditLink.Name, Mode=TwoWay}"/>
+                    <TextBox Template="{DynamicResource CustomTextBoxTemplate.Thickness.Single}" Grid.Column="1" Grid.Row="1" Text="{Binding EditLink.Phone, Mode=TwoWay}"/>
+                    <TextBox Template="{DynamicResource CustomTextBoxTemplate.Thickness.Single}" Grid.Column="1" Grid.Row="2" Text="{Binding EditLink.Complex, Mode=TwoWay}"/>
+                    <TextBox Template="{DynamicResource CustomTextBoxTemplate.Thickness.Single}" Grid.Column="1" Grid.Row="3" Text="{Binding EditLink.Door, Mode=TwoWay}"/>
                 </Grid>
             </Border>
 
             <Border Grid.Row="2">
                 <Grid Margin="0 20 0 0">
-                    <Button Content="Submit"
-                    Height="35"
+                    <Button Content="提交"
+                    Height="30"
                         Width="250"
-                        VerticalAlignment="Top"    
+                        VerticalAlignment="Top" 
+                            Style="{DynamicResource CustomButtonStyle.Primary}"
                     Command="{Binding SubmitEditLinkItemCommand}"
                     >
                         <i:Interaction.Triggers>
@@ -126,9 +120,6 @@
                     </Button>
                 </Grid>
             </Border>
-
-
-            
 
         </Grid>
     </Border>

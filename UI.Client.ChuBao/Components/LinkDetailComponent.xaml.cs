@@ -12,7 +12,7 @@ namespace UI.Client.ChuBao.Components
     {
         public LinkDetailComponent()
         {
-            this.DataContext = App.AppHost!.Services.GetRequiredService<ContactViewModel>();
+            this.DataContext = App.AppHost!.Services.GetRequiredService<LinkDetailViewModel>();
             InitializeComponent();
         }
     }

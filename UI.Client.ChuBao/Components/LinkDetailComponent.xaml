@@ -8,200 +8,192 @@
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              
-             d:DataContext="{d:DesignInstance Type=viewmodels:ContactViewModel}"
-             mc:Ignorable="d" 
-             >
+             d:DataContext="{d:DesignInstance Type=viewmodels:LinkDetailViewModel}"
+             mc:Ignorable="d"  >
+
     <UserControl.Resources>
-        
-        <Style x:Key="TextBlockStyle1" TargetType="{x:Type TextBlock}">
-            <Setter Property="TextWrapping" Value="NoWrap"/>
-            <Setter Property="TextTrimming" Value="None"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="10 10 0 0"/>
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="FontSize" Value="16" />
         </Style>
         
     </UserControl.Resources>
     
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <Grid x:Name="grid_displayInformation">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="2*"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid x:Name="grid_basic_info">
-                    
+    <Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition />
+                <RowDefinition Height="160"/>
+            </Grid.RowDefinitions>
+            
+            <Border Grid.Row="0"
+                    Style="{DynamicResource BorderCustomStyle.NonThickness}"
+                    BorderThickness="0 0 0 0.3">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="20"/>
-                        <RowDefinition Height="20"/>
-                    </Grid.RowDefinitions>
+                    <Border Grid.Column="0"
+                            Style="{DynamicResource BorderCustomStyle.NonThickness}"
+                            Margin="10 10 0 0">
+                        <TextBlock Text="{Binding Link.Name}"
+                                   FontSize="32"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Bottom" />
+                    </Border>
+                    
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions >
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions >
 
-                    <TextBlock Grid.Column="0" Grid.Row="0" Text="姓名："/>
-                    <TextBlock Grid.Column="0" Grid.Row="1" Text="电话："/>
-                    <TextBlock Grid.Column="0" Grid.Row="2" Text="小区："/>
-                    <TextBlock Grid.Column="0" Grid.Row="3" Text="门牌："/>
-
-                    <TextBlock Style="{DynamicResource TextBlockStyle1}" Grid.Column="1" Grid.Row="0" Text="{Binding LinkItem.Name}"/>
-                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding LinkItem.Phone}"/>
-                    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding LinkItem.Complex}"/>
-                    <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding LinkItem.Door}"/>
-                </Grid>
-
-                <StackPanel Grid.Row="1">
-                    <StackPanel Orientation="Horizontal">
-                        
-                        <fa:IconImage Icon="Weixin">
-                                <i:Interaction.Triggers>
-                                    <i:DataTrigger Binding="{Binding LinkMark.HasWeChat}" Value="true">
-                                        <i:ChangePropertyAction TargetObject="{Binding ElementName=weixinicon}"
-                                                           PropertyName="Foreground" Value="green"/>
-                                    </i:DataTrigger>
-                                    <i:DataTrigger Binding="{Binding LinkMark.HasWeChat}" Value="false">
-                                        <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                           PropertyName="Foreground" Value="gray"/>
-                                    </i:DataTrigger>
-                                </i:Interaction.Triggers>
-                            </fa:IconImage>
-
-                        <fa:IconImage Icon="Shop">
-                            <i:Interaction.Triggers>
-                                <i:DataTrigger Binding="{Binding LinkMark.HasArrived}" Value="true">
-                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                           PropertyName="Foreground" Value="royalblue"/>
-                                </i:DataTrigger>
-                                <i:DataTrigger Binding="{Binding LinkMark.HasArrived}" Value="false">
-                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                           PropertyName="Foreground" Value="gray"/>
-                                </i:DataTrigger>
-                            </i:Interaction.Triggers>
-                        </fa:IconImage>
-
-                        <fa:IconImage Icon="ShoppingBag">
-                            <i:Interaction.Triggers>
-                                <i:DataTrigger Binding="{Binding LinkMark.HasDeposit}" Value="true">
-                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                           PropertyName="Foreground" Value="royalblue"/>
-                                </i:DataTrigger>
-                                <i:DataTrigger Binding="{Binding LinkMark.HasDeposit}" Value="false">
-                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                           PropertyName="Foreground" Value="gray"/>
-                                </i:DataTrigger>
-                            </i:Interaction.Triggers>
-                        </fa:IconImage>
-                        
-                        <fa:IconImage Icon="Handshake" >
-                            <i:Interaction.Triggers>
-                                <i:DataTrigger Binding="{Binding LinkMark.HasContract}" Value="true">
-                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                           PropertyName="Foreground" Value="royalblue"/>
-                                </i:DataTrigger>
-                                <i:DataTrigger Binding="{Binding LinkMark.HasContract}" Value="false">
-                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                           PropertyName="Foreground" Value="gray"/>
-                                </i:DataTrigger>
-                            </i:Interaction.Triggers>
-                        </fa:IconImage>
-
-                        <fa:IconImage Icon="Flag">
-                            <i:Interaction.Triggers>
-                                <i:DataTrigger Binding="{Binding LinkMark.IsAttention}" Value="true">
-                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                           PropertyName="Foreground" Value="red"/>
-                                </i:DataTrigger>
-                                <i:DataTrigger Binding="{Binding LinkMark.IsAttention}" Value="false">
-                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                           PropertyName="Foreground" Value="gray"/>
-                                </i:DataTrigger>
-                            </i:Interaction.Triggers>
-                        </fa:IconImage>
-
-                        <fa:IconImage Icon="LinkSlash">
-                            <i:Interaction.Triggers>
-                                <i:DataTrigger Binding="{Binding LinkMark.IsLose}" Value="true">
-                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                           PropertyName="Foreground" Value="yellow"/>
-                                </i:DataTrigger>
-                                <i:DataTrigger Binding="{Binding LinkMark.IsLose}" Value="false">
-                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                           PropertyName="Foreground" Value="gray"/>
-                                </i:DataTrigger>
-                            </i:Interaction.Triggers>
-                            </fa:IconImage>
-                        
-                    </StackPanel>
-                        
-                    <Button x:Name="btn_submitmark" Content="标签管理" Command="{Binding PopUpEditLinkMarkCommand}">
-                    </Button>
-                </StackPanel>
-                
-            </Grid>
-
-
-            <Grid x:Name="grid_record"
-                  Grid.Column="1">
-                <ListBox x:Name="lb_recordlist" 
-                         ItemsSource="{Binding Records}"
-                         ItemContainerStyle="{DynamicResource ListBoxItemContainer_Customer}" 
-                         Style="{DynamicResource ListBoxStyle_Customer}"
-                         >
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
+                        <Border Grid.Row="0">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Margin="5 0 0 0" Text="{Binding AddTime, StringFormat='yy-MM-dd'}" />
-                                <TextBlock Margin="5 0 0 0" Text="{Binding Content}" />
+                                <fa:IconImage Icon="Weixin" Style="{DynamicResource CustomIconImage.Custom.Square.Bottom}" >
+                                    <i:Interaction.Triggers>
+                                        <i:DataTrigger Binding="{Binding Mark.HasWeChat}" Value="true">
+                                            <!--<i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Visibility" Value="Visible" />-->
+                                            <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Success.Foreground}" />
+                                        </i:DataTrigger>
+                                        <i:DataTrigger Binding="{Binding Mark.HasWeChat}" Value="false">
+                                            <!--<i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Visibility" Value="Collapsed" />-->
+                                            <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Remains.Foreground}" />
+                                        </i:DataTrigger>
+                                    </i:Interaction.Triggers>
+                                </fa:IconImage>
+
+                                <fa:IconImage Icon="Shop" Style="{DynamicResource CustomIconImage.Custom.Square.Bottom}">
+                                    <i:Interaction.Triggers>
+                                        <i:DataTrigger Binding="{Binding Mark.HasArrived}" Value="true">
+                                            <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Primary.Foreground}" />
+                                        </i:DataTrigger>
+                                        <i:DataTrigger Binding="{Binding Mark.HasArrived}" Value="false">
+                                            <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Remains.Foreground}" />
+                                        </i:DataTrigger>
+                                    </i:Interaction.Triggers>
+                                </fa:IconImage>
+
+                                <fa:IconImage Icon="ShoppingBag" Style="{DynamicResource CustomIconImage.Custom.Square.Bottom}">
+                                    <i:Interaction.Triggers>
+                                        <i:DataTrigger Binding="{Binding Mark.HasDeposit}" Value="true">
+                                            <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Primary.Foreground}" />
+                                        </i:DataTrigger>
+                                        <i:DataTrigger Binding="{Binding Mark.HasDeposit}" Value="false">
+                                            <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Remains.Foreground}" />
+                                        </i:DataTrigger>
+                                    </i:Interaction.Triggers>
+                                </fa:IconImage>
+
+                                <fa:IconImage Icon="Handshake" Style="{DynamicResource CustomIconImage.Custom.Square.Bottom}">
+                                    <i:Interaction.Triggers>
+                                        <i:DataTrigger Binding="{Binding Mark.HasContract}" Value="true">
+                                            <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Primary.Foreground}" />
+                                        </i:DataTrigger>
+                                        <i:DataTrigger Binding="{Binding Mark.HasContract}" Value="false">
+                                            <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Remains.Foreground}" />
+                                        </i:DataTrigger>
+                                    </i:Interaction.Triggers>
+                                </fa:IconImage>
+
+                                <fa:IconImage Icon="Flag" Style="{DynamicResource CustomIconImage.Custom.Square.Bottom}">
+                                    <i:Interaction.Triggers>
+                                        <i:DataTrigger Binding="{Binding Mark.IsAttention}" Value="true">
+                                            <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Warning.Foreground}" />
+                                        </i:DataTrigger>
+                                        <i:DataTrigger Binding="{Binding Mark.IsAttention}" Value="false">
+                                            <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Remains.Foreground}" />
+                                        </i:DataTrigger>
+                                    </i:Interaction.Triggers>
+                                </fa:IconImage>
+
+                                <fa:IconImage Icon="LinkSlash" Style="{DynamicResource CustomIconImage.Custom.Square.Bottom}">
+                                        <i:Interaction.Triggers>
+                                            <i:DataTrigger Binding="{Binding Mark.IsLose}" Value="true">
+                                                <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Visibility" Value="Visible" />
+                                                <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="Red" />
+                                            </i:DataTrigger>
+                                        <i:DataTrigger Binding="{Binding Mark.IsLose}" Value="false">
+                                            <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Remains.Foreground}" />
+                                        </i:DataTrigger>
+                                        </i:Interaction.Triggers>
+                                    </fa:IconImage>
                             </StackPanel>
+                        </Border>
+
+                        <Border Grid.Row="1">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Link.Phone}" />
+                                <TextBlock Text="{Binding Link.Complex}" />
+                                <TextBlock Text="{Binding Link.Door}" />
+                            </StackPanel>
+                        </Border>
+                        
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1" Style="{DynamicResource BorderCustomStyle.NonThickness}"
+                    Background="Transparent"
+                    Margin="10 10 0 0"
+                    Width="360">
+                <ItemsControl x:Name="listrecords"
+                              Style="{DynamicResource CustomItemsControlStyle.Custom}"
+                              ItemsSource="{Binding Records}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{DynamicResource BorderCustomStyle.NonThickness}"
+                                    Background="Transparent">
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Style="{DynamicResource BorderCustomStyle.NonThickness}"
+                                            CornerRadius="5 5 5 5"
+                                            Margin="3"
+                                            Background="AliceBlue"
+                                            >
+                                        <TextBlock Text="{Binding AddTime, StringFormat='yy-MM-dd'}"
+                                                   VerticalAlignment="Center"/>
+                                    </Border>
+                                    <TextBlock Text="{Binding Content}"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
 
-                </ListBox>
-            </Grid>
-
+            <Border Grid.Row="2" Style="{DynamicResource BorderCustomStyle.NonThickness}" Margin="10 0 0 0" >
+                <StackPanel Orientation="Horizontal">
+                    <TextBox x:Name="tbxrecordcontent" Height="120" Width="300" Padding="2" 
+                             Text="{Binding RecordContent}"/>
+                    <Button Content="提交" Style="{DynamicResource CustomButtonStyle.Primary}" Height="35" Width="70"
+                            VerticalAlignment="Bottom"
+                            Margin="10 0 0 20"
+                            Command="{Binding SubmitNewRecordCommand}"
+                            />
+                </StackPanel>
+            </Border>
         </Grid>
-
-        <Grid x:Name="grid_submitnewrecord"
-              Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <TextBlock Text="新的联络记录："
-                       Grid.Row="0"/>
-
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-
-                <TextBox x:Name="tbx_newrecord" 
-                         Width="200"
-                         Height="40"
-                         Background="Transparent"
-                         Text="{Binding NewRecord.Content}"
-                         Grid.Column="0"/>
-                <Button Content="提交"
-                        Command="{Binding SubmitNewLinkRecordCommand}"
-                        CommandParameter="{Binding ElementName=tbx_newrecord, Path=Text}"
-                        Grid.Column="1"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom"/>
-            </Grid>
-        </Grid>
-
-    </Grid>
+    </Border>
+    
+    
 </UserControl>

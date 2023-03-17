@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Access.Client.ChuBao
+namespace Access.Client.ChuBao.Services
 {
     public interface ILinkService
     {
-        Task<IEnumerable<LinkDto>> LoadLinkListAsync();
+        Task<List<LinkListDto>> LoadLinkListAsync();
         Task<LinkDto> LoadLinkAsync();
 
         Task<bool> AddLinkAsync(LinkCreateDto model);
@@ -15,8 +15,7 @@ namespace Access.Client.ChuBao
 
         Task<IEnumerable<RecordDto>> GetRecordListAsync(Guid contactId);
         Task<bool> AddLinkRecordAsync(RecordCreateDto model);
-        public Task<MarkDto> GetLinkMarkAsync(Guid contactId);
+        public Task<MarkDto> GetMarkAsync(Guid contactId);
         public Task<bool> UpdateLinkMarkAsync(MarkDto model);
-        public Task<IEnumerable<ContactAMark>> LoadLinkAndMarkListAsync();
     }
 }

@@ -1,43 +1,46 @@
-﻿using Access.Client.ChuBao;
+﻿using Access.Client.ChuBao.Services;
+using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging.Messages;
 using Core.Client.ChuBao.Dtos;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using UI.Client.ChuBao.Commons;
 using UI.Client.ChuBao.Components;
 using UI.Client.ChuBao.Dialogs;
 
 namespace UI.Client.ChuBao.ViewModels
 {
-    public class ContactViewModel : ObservableObject
+    public class ContactViewModel : ObservableRecipient
     {
         private readonly ILinkService _linkService;
         private readonly IDialogHandler _dialogHandler;
+        private readonly IMapper _mapper;
 
         public ContactViewModel(
             ILinkService linkService,
-            IDialogHandler dialogHandler
+            IDialogHandler dialogHandler,
+            IMapper mapper
             )
         {
             this._linkService = linkService;
             this._dialogHandler = dialogHandler;
-            this.LinkNewDto = new LinkCreateDto();
-            this.LinkItem = new LinkDto();
-            this.NewRecord = new RecordCreateDto();
-            this.LinkMark = new MarkDto();
+            this._mapper = mapper;
 
-            this.LinkDetailView = App.AppHost!.Services.GetRequiredService<DefaultBlankViewComponent>();
+            NewLink = new LinkCreateDto();
+            EditLink = new LinkDto();
 
-            //ExecuteLoadLinkListAsync();
-            ExecuteLoadLinkAndMarkListAsync();
+            this.LinkDetailView =  App.AppHost!.Services.GetRequiredService<DefaultBlankViewComponent>();
+
+            ExecuteLoadLinkListAsync();
 
             PopUpAddLinkCommand = new RelayCommand<string>(title =>
             _dialogHandler.CreateDialog<AddLinkItemDialog>("新增联系人", App.Current.MainWindow));
 
-            PopUpEditLinkCommand = new RelayCommand<ContactAMark>(model => ExecuteCreateEditLinkDialog(model!));
+            PopUpEditLinkCommand = new RelayCommand<LinkListDto>(model => ExecuteCreateEditLinkDialog(model));
             PopUpEditLinkMarkCommand = new RelayCommand<MarkDto>(title =>
             _dialogHandler.CreateDialog<EditLinkMarkDialog>($"标签管理", App.Current.MainWindow));
 
@@ -45,107 +48,63 @@ namespace UI.Client.ChuBao.ViewModels
             SubmitNewLinkItemCommand = new RelayCommand(ExcuteSubmitNewLinkItemAsync);
             SubmitEditLinkItemCommand = new RelayCommand(ExcuteSubmitEditLinkItemAsync);
 
-            ShowLinkDetailViewCommand = new RelayCommand<ContactAMark>(model => ExecuteShowLinkDetailView(model));
-            SubmitNewLinkRecordCommand = new RelayCommand(ExcuteSubmitNewLinkRecordAsync);
+            ShowLinkDetailViewCommand = new RelayCommand<LinkListDto>(model => ExecuteShowLinkDetailView(model));
 
-            CheckLinkMarkCommand = new RelayCommand<string>(x => ExecuteEditLinkMarkAsync(x));
 
         }
 
 
 
         #region Implements
-        private async void ExecuteLoadLinkAndMarkListAsync()
-        {
-            var result = await _linkService!.LoadLinkAndMarkListAsync();
 
-            LinkAndMarkList = new ObservableCollection<ContactAMark>(result);
-        }
-        private async void ExecuteEditLinkMarkAsync(string? markItem = null)
-        {
-            var result = await _linkService!.UpdateLinkMarkAsync(LinkMark!);
-            
-            ExcuteLoadLinkRecordListAsync(LinkItem!.Id);
-        }
-
-        private async void ExcuteSubmitNewLinkRecordAsync()
-        {
-            // dev时是写死的，后面要获取登录的用户名来替代
-            NewRecord!.Booker = "hyd";
-            NewRecord.ContactId = LinkItem!.Id;
-
-            await _linkService.AddLinkRecordAsync(NewRecord);
-
-            NewRecord = null;
-            ExcuteLoadLinkRecordListAsync(LinkItem!.Id);
-        }
-
-        private async void ExcuteLoadLinkRecordListAsync(Guid id)
-        {
-            var records = (await _linkService.GetRecordListAsync(id))
-                .OrderByDescending(x => x.AddTime);
-
-            Records = new ObservableCollection<RecordDto>(records);
-        }
-        private async void ExecuteShowLinkDetailView(ContactAMark? model)
+        private void ExecuteShowLinkDetailView(LinkListDto? model)
         {
             if (model == null)
             {
                 return;
             }
-            LinkItem = new LinkDto
-            {
-                Id = model.ContactId,
-                Name = model.Name,
-                Phone = model.Phone,
-                Complex = model.Complex,
-                Door = model.Door
-            };
-            LinkMark = await _linkService.GetLinkMarkAsync(LinkItem.Id);
+            var link = _mapper.Map<LinkDto>(model);
             LinkDetailView = App.AppHost!.Services.GetRequiredService<LinkDetailComponent>();
-            ExcuteLoadLinkRecordListAsync(LinkItem.Id);
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LinkDto>(link));
         }
 
-        private void ExecuteCreateEditLinkDialog(ContactAMark model)
+        private void ExecuteCreateEditLinkDialog(LinkListDto? model)
         {
-            LinkItem = new LinkDto
+            if (model.Id == Guid.Empty)
             {
-                Id = model.ContactId,
-                Name = model.Name,
-                Phone = model.Phone,
-                Complex = model.Complex,
-                Door = model.Door
-            };
+                return;
+            }
+            EditLink = _mapper.Map<LinkDto>(model);
 
             _dialogHandler.CreateDialog<EditLinkItemDialog>($"修改信息", App.Current.MainWindow);
         }
 
         private async void ExcuteSubmitEditLinkItemAsync()
         {
-            if (LinkItem != null)
+            var result = await _linkService.ModifyLinkAsync(EditLink);
+            if (result)
             {
-                await _linkService.ModifyLinkAsync(LinkItem);
+                EditLink = null;
+
+                ExecuteLoadLinkListAsync();
             }
-            
-            ExecuteLoadLinkListAsync();
         }
 
         private async void ExcuteSubmitNewLinkItemAsync()
         {
-            //if (LinkNewDto == null) return;
-
-            LinkNewDto!.Booker = "hyd";
-
-            await _linkService.AddLinkAsync(LinkNewDto!);
-
-            LinkNewDto = null;
-
-            ExecuteLoadLinkListAsync();
+            if (NewLink.Name == null)
+                return;
+            var result = await _linkService.AddLinkAsync(NewLink);
+            if (result)
+            {
+                NewLink = null;
+                ExecuteLoadLinkListAsync();
+            }
         }
         private async void ExecuteLoadLinkListAsync()
         {
             var items = await _linkService.LoadLinkListAsync();
-            LinkList = new ObservableCollection<LinkDto>(items);
+            LinkList = new ObservableCollection<LinkListDto>(items);
 
             LinkDetailView = App.AppHost!.Services.GetRequiredService<DefaultBlankViewComponent>();
         }
@@ -154,10 +113,10 @@ namespace UI.Client.ChuBao.ViewModels
 
         #region Commands
         public RelayCommand SubmitNewLinkRecordCommand { get; set; }
-        public RelayCommand<ContactAMark> ShowLinkDetailViewCommand { get; set; }
+        public RelayCommand<LinkListDto> ShowLinkDetailViewCommand { get; set; }
 
         public RelayCommand<string> PopUpAddLinkCommand { get; set; }
-        public RelayCommand<ContactAMark> PopUpEditLinkCommand { get; set; }
+        public RelayCommand<LinkListDto> PopUpEditLinkCommand { get; set; }
         public RelayCommand SubmitNewLinkItemCommand { get; set; }
         public RelayCommand SubmitEditLinkItemCommand { get; set; }
         public RelayCommand<string> CheckLinkMarkCommand { get; set; }
@@ -168,35 +127,21 @@ namespace UI.Client.ChuBao.ViewModels
 
         #region ObservableObject
 
-        private ObservableCollection<LinkDto>? _linkList;
+        private ObservableCollection<LinkListDto>? _linkList;
 
-        public ObservableCollection<LinkDto>? LinkList { get => _linkList; set => SetProperty(ref _linkList, value); }
+        public ObservableCollection<LinkListDto>? LinkList { get => _linkList; set => SetProperty(ref _linkList, value); }
 
-        private LinkCreateDto? _linkNewDto;
+        private LinkCreateDto? _newLink;
+        public LinkCreateDto? NewLink { get => _newLink; set=> SetProperty(ref _newLink, value); }
 
-        public LinkCreateDto? LinkNewDto { get => _linkNewDto; set => SetProperty(ref _linkNewDto, value); }
-
-        private LinkDto? _linkItem;
-
-        public LinkDto? LinkItem { get => _linkItem; set => SetProperty(ref _linkItem, value); }
-
+        private LinkDto? _editLink;
+        public LinkDto? EditLink { get => _editLink; set => SetProperty(ref _editLink, value); }
 
         private object? _linkDetaiView;
 
         public object? LinkDetailView { get => _linkDetaiView; set => SetProperty(ref _linkDetaiView, value); }
 
-        private ObservableCollection<RecordDto>? _records;
 
-        public ObservableCollection<RecordDto>? Records { get => _records; set => SetProperty(ref _records, value); }
-
-        private RecordCreateDto? _newRecord;
-
-        public RecordCreateDto? NewRecord { get => _newRecord; set => SetProperty(ref _newRecord, value); }
-
-        private MarkDto? _linkMark;
-        public MarkDto? LinkMark { get => _linkMark; set => SetProperty(ref _linkMark, value);}
-        private ObservableCollection<ContactAMark>? _linkAndMarkList;
-        public ObservableCollection<ContactAMark>? LinkAndMarkList { get => _linkAndMarkList; set =>  SetProperty(ref _linkAndMarkList, value); }
 
 
         #endregion

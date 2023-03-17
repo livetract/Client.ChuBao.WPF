@@ -7,7 +7,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Access.Client.ChuBao
+namespace Access.Client.ChuBao.Services
 {
     public class LinkService : ILinkService
     {
@@ -15,27 +15,16 @@ namespace Access.Client.ChuBao
 
         public LinkService(HttpClient client)
         {
-            this._client = client;
+            _client = client;
         }
 
-        
-        public async Task<IEnumerable<ContactAMark>> LoadLinkAndMarkListAsync()
-        {
-            var url = _client.BaseAddress + "GetContactWithMarks";
-            var reponse = await _client.GetAsync(url);
-            if (!reponse.IsSuccessStatusCode)
-            {
-                // ...
-            }
-            var result = await reponse.Content.ReadFromJsonAsync<List<ContactAMark>>(new JsonSerializerOptions(JsonSerializerDefaults.Web));
-            return result;
-        }
+
         public async Task<bool> AddLinkAsync(LinkCreateDto model)
         {
             var url = _client.BaseAddress + "createcontact";
-            var reponse = await _client.PostAsJsonAsync(url,model,
+            var reponse = await _client.PostAsJsonAsync(url, model,
                 new JsonSerializerOptions(JsonSerializerDefaults.Web));
-            if (!reponse.IsSuccessStatusCode )
+            if (!reponse.IsSuccessStatusCode)
             {
                 return false;
             }
@@ -47,25 +36,11 @@ namespace Access.Client.ChuBao
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<LinkDto>> LoadLinkListAsync()
-        {
-            //throw new NotImplementedException();
-            var url = _client.BaseAddress + "getcontacts";
-            var reponse = await _client.GetAsync(url);
-            if (!reponse.IsSuccessStatusCode)
-            {
-                // 请求失败怎么办？
-                return Enumerable.Empty<LinkDto>();
-            }
-            var links = await _client.GetFromJsonAsync<IEnumerable<LinkDto>>(url, new JsonSerializerOptions(JsonSerializerDefaults.Web));
-            return links;
-        }
-
         public async Task<bool> ModifyLinkAsync(LinkDto model)
         {
             var url = _client.BaseAddress + "updatecontact";
             var reponse = await _client.PutAsJsonAsync(url, model,
-                new JsonSerializerOptions(JsonSerializerDefaults.Web)); 
+                new JsonSerializerOptions(JsonSerializerDefaults.Web));
             return reponse.IsSuccessStatusCode ? true : false;
         }
 
@@ -94,9 +69,9 @@ namespace Access.Client.ChuBao
         }
 
         // Contact Mark
-        public async Task<MarkDto> GetLinkMarkAsync(Guid contactId)
+        public async Task<MarkDto> GetMarkAsync(Guid contactId)
         {
-            var url = _client.BaseAddress + "getcontactmark";
+            var url = _client.BaseAddress + "getmark";
             var reponse = await _client.PostAsJsonAsync(url, contactId,
                 new JsonSerializerOptions(JsonSerializerDefaults.Web));
             if (!reponse.IsSuccessStatusCode)
@@ -112,8 +87,18 @@ namespace Access.Client.ChuBao
             var url = _client.BaseAddress + "updatecontactmark";
             var reponse = await _client.PutAsJsonAsync(url, model,
                 new JsonSerializerOptions(JsonSerializerDefaults.Web));
-            if (!reponse.IsSuccessStatusCode) {  return false; }
+            if (!reponse.IsSuccessStatusCode) { return false; }
             return true;
         }
+
+        public async Task<List<LinkListDto>> LoadLinkListAsync()
+        {
+            var url = _client.BaseAddress + "getcontactlist";
+            var reponse = await _client.GetAsync(url);
+            if (!reponse.IsSuccessStatusCode) { return new List<LinkListDto>(); }
+            var dtos = await reponse.Content.ReadFromJsonAsync<List<LinkListDto>>(new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            return dtos;
+        }
+
     }
 }

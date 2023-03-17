@@ -5,11 +5,16 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries >
-                <ResourceDictionary Source="styles/listboxcustomstyle.xaml" />
-                <ResourceDictionary Source="styles/textblockcustomstyle.xaml" />
-                <ResourceDictionary Source="styles/boardcustomstyle.xaml" />
+                <ResourceDictionary Source="styles/customlistboxstyle.xaml" />
+                <ResourceDictionary Source="styles/customtextblockstyle.xaml" />
+                <ResourceDictionary Source="styles/customboardstyle.xaml" />
                 <ResourceDictionary Source="styles/customsolidcolorbrush.xaml" />
                 <ResourceDictionary Source="styles/CustomButtonStyle.xaml"/>
+                <ResourceDictionary Source="styles/customradiobuttonstyle.xaml" />
+                <ResourceDictionary Source="styles/customtextboxtemplate.xaml" />
+                <ResourceDictionary Source="styles/customiconimagestyle.xaml" />
+                <ResourceDictionary Source="styles/customitemscontrolstyle.xaml" />
+                <ResourceDictionary Source="styles/customscrollviewerstyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
          

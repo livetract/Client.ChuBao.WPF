@@ -1,5 +1,4 @@
-﻿using Access.Client.ChuBao;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
 using System;
 using UI.Client.ChuBao.Components;
@@ -8,7 +7,7 @@ using UI.Client.ChuBao.ViewModels;
 using UI.Client.ChuBao.Views;
 using Microsoft.Extensions.Configuration;
 using UI.Client.ChuBao.Commons;
-using System.Windows.Data;
+using Access.Client.ChuBao.Services;
 
 namespace UI.Client.ChuBao
 {
@@ -21,6 +20,7 @@ namespace UI.Client.ChuBao
 
             services.AddScoped<ContactViewModel>();
             services.AddScoped<DashboardViewModel>();
+            services.AddScoped<LinkDetailViewModel>();
         }
 
         public static void ConfigureViews(this IServiceCollection services)
@@ -40,7 +40,7 @@ namespace UI.Client.ChuBao
         public static void ConfigureCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IDialogHandler,DialogHandler>();
-
+            services.AddAutoMapper(typeof(MapperProfile));
 
 
             services.AddHttpClient<ILinkService, LinkService>(

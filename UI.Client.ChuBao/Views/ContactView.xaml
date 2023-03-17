@@ -13,121 +13,134 @@
         <Style TargetType="TextBlock" x:Key="textblockstyle">
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0 5 5 0" />
         </Style>
 
-        <Style TargetType="{x:Type fa:IconImage}" x:Key="iconimagestyle">
-            <Setter Property="Height" Value="15" />
-            <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}" />
-            <Setter Property="Margin" Value="0 0 5 0" />
-        </Style>
 
     </UserControl.Resources>
 
+    <Border x:Name="borderlayoutcontent"
+            Style="{DynamicResource BorderCustomStyle.NonThickness}">
+        <StackPanel Orientation="Horizontal">
+            <Border x:Name="borderlist"
+                    Style="{DynamicResource BorderCustomStyle.NonThickness}"
+                    BorderThickness="0 0 0.3 0" Width="300">
+                <Grid>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition  />
-        </Grid.ColumnDefinitions>
+                    <TextBox HorizontalAlignment="Center"
+                             VerticalAlignment="Top"
+                             Margin="0 5 0 0"
+                             Width="220"
+                             BorderThickness="0 0 0 0.3"
+                             />
 
-        <Border BorderThickness="0.3" BorderBrush="Black">
-            <ListBox x:Name="lb_linklist"
-                 Style="{DynamicResource ListBoxStyle_Customer}"
-                 ItemContainerStyle="{DynamicResource ListBoxItemContainer_Customer}"
-                 ItemsSource="{Binding LinkAndMarkList}"
-                 Grid.Column="0">
-                <i:Interaction.Triggers>
+                    <ListBox x:Name="listboxlinklist"
+                             Style="{DynamicResource CustomListBoxStyle.NonScrollbar}"
+                             ItemContainerStyle="{DynamicResource CustomListBoxItemContainer.Custom}" 
+                             ItemsSource="{Binding LinkList}"
+                             Margin="0 30 0 0">
 
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding PopUpEditLinkCommand}"
-                                           CommandParameter="{Binding ElementName=lb_linklist, Path=SelectedItem}"/>
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding ShowLinkDetailViewCommand}"
-                                           CommandParameter="{Binding ElementName=lb_linklist, Path=SelectedItem}"/>
-                    </i:EventTrigger>
+                        <i:Interaction.Triggers>
 
-                </i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding PopUpEditLinkCommand}"
+                                           CommandParameter="{Binding ElementName=listboxlinklist, Path=SelectedItem}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding ShowLinkDetailViewCommand}"
+                                           CommandParameter="{Binding ElementName=listboxlinklist, Path=SelectedItem}"/>
+                            </i:EventTrigger>
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border  Width="210" Margin="0" Padding="0" >
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="30"/>
-                                    <RowDefinition Height="25"/>
-                                </Grid.RowDefinitions>
-                                <Grid Grid.Row="0">
-                                    <TextBlock Text="{Binding Name}" 
-                                           FontSize="18"
-                                           VerticalAlignment="Center"
-                                           Margin="5 0 0 0"/>
+                        </i:Interaction.Triggers>
 
-                                    <StackPanel HorizontalAlignment="Stretch"
-                                            Orientation="Horizontal"
-                                            FlowDirection="RightToLeft"
-                                            Margin="0 0 5 0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{DynamicResource BorderCustomStyle.NonThickness}"
+                                        Background="Transparent"
+                                        Margin="5">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Border Grid.Row="0" 
+                                                Style="{DynamicResource BorderCustomStyle.NonThickness}" 
+                                                Background="Transparent"
+                                                Height="35">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="150" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Name}" FontSize="18" />
 
-                                        <fa:IconImage Icon="Weixin" Style="{StaticResource iconimagestyle}" >
-                                            <i:Interaction.Triggers>
-                                                <i:DataTrigger Binding="{Binding HasWeChat}" Value="true">
-                                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                                        PropertyName="Visibility" Value="Visible" />
-                                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                                        PropertyName="Foreground" Value="Green" />
-                                                </i:DataTrigger>
-                                                <i:DataTrigger Binding="{Binding HasWeChat}" Value="false">
-                                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                                        PropertyName="Visibility" Value="Collapsed" />
-                                                </i:DataTrigger>
-                                            </i:Interaction.Triggers>
-                                        </fa:IconImage>
+                                                <StackPanel Grid.Column="1" >
+                                                    
+                                                    <Button Style="{DynamicResource CustomButtonStyle.NonThickness}"
+                                                            Height=" 20" Width="20">
+                                                        <fa:IconImage Icon="Flag">
+                                                            <i:Interaction.Triggers>
+                                                                <i:DataTrigger Binding="{Binding IsAttention}" Value="True">
+                                                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Warning.Foreground}" />
+                                                                </i:DataTrigger>
+                                                                <i:DataTrigger Binding="{Binding IsAttention}" Value="False">
+                                                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Remains.Foreground}" />
+                                                                </i:DataTrigger>
+                                                            </i:Interaction.Triggers>
+                                                        </fa:IconImage>
 
-                                        <fa:IconImage Icon="Flag" Style="{StaticResource iconimagestyle}">
-                                            <i:Interaction.Triggers>
-                                                <i:DataTrigger Binding="{Binding IsAttention}" Value="true">
-                                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                                        PropertyName="Visibility" Value="Visible" />
-                                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                                        PropertyName="Foreground" Value="Red" />
-                                                </i:DataTrigger>
-                                                <i:DataTrigger Binding="{Binding IsAttention}" Value="false">
-                                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
-                                                                        PropertyName="Visibility" Value="Collapsed" />
-                                                </i:DataTrigger>
-                                            </i:Interaction.Triggers>
-                                        </fa:IconImage>
+                                                        <Button.ToolTip>
+                                                            <ToolTip Content="重点对象" Background="AliceBlue" Foreground="RoyalBlue"/>
 
-                                    </StackPanel>
+                                                        </Button.ToolTip>
+                                                        
+                                                    </Button>
+                                                    
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                        
+                                        <Border Grid.Row="1" Style="{DynamicResource BorderCustomStyle.NonThickness}" Background="Transparent">
+                                            <Grid >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="80"/>
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Phone}" Grid.Column="0" />
+                                                <TextBlock Text="{Binding Complex}" Grid.Column="1" />
+                                                <TextBlock Text="{Binding Door}" Grid.Column="2" />
+                                            </Grid>
+                                        </Border>
+                                        
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        
+                    </ListBox>
+                    <Button VerticalAlignment="Bottom"
+                            HorizontalAlignment="Right"
+                            Command="{Binding PopUpAddLinkCommand}"
+                            Style="{DynamicResource CustomButtonStyle.Primary}"
+                            Height="30" Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
+                            Margin="0 0 10 10">
+                        <fa:IconImage Icon="Add" Foreground="White" />
+                    </Button>
+                </Grid>
 
-                                </Grid>
+            </Border>
 
-                                <Grid Grid.Row="1">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="60"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Style="{StaticResource textblockstyle}" Grid.Column="0" Text="{Binding Phone}"   Margin="5 0 0 0" />
-                                    <TextBlock Style="{StaticResource textblockstyle}" Grid.Column="1" Text="{Binding Complex}"  Margin="5 0 5 0"/>
-                                    <TextBlock Style="{StaticResource textblockstyle}" Grid.Column="2" Text="{Binding Door}"     Margin="5 0 5 0" />
-                                </Grid>
-                            </Grid>
-
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </Border>
-
-        <Button Content="Add" 
-                VerticalAlignment="Bottom"
-                Command="{Binding PopUpAddLinkCommand}"
-                Grid.Column="0"/>
-
-        <ContentPresenter x:Name="conent_detail" Grid.Column="1" 
-                          Content="{Binding LinkDetailView, Mode=TwoWay}"/>
+            <Border x:Name="borderitemdetail">
+                <ContentPresenter x:Name="conent_detail"
+                          Content="{Binding LinkDetailView}"/>
+            </Border>
 
 
-    </Grid>
+        </StackPanel>
+    </Border>
+
+
 </UserControl>

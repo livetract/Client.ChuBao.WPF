@@ -17,7 +17,7 @@
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="Margin" Value="20 0 0 0" />
         </Style>
-        
+
         <Style TargetType="CheckBox">
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="Margin" Value="0 0 20 0" />
@@ -26,7 +26,7 @@
             <Setter Property="Command" Value="{Binding CheckLinkMarkCommand}" />
             <Setter Property="CommandParameter" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" />
         </Style>
-        
+
         <Style TargetType="Border" x:Key="content_border">
             <Setter Property="Padding" Value="12" />
             <Setter Property="Margin" Value="3 0 "/>
@@ -38,33 +38,24 @@
         <SolidColorBrush x:Key="Background_Black" Color="Black" />
         <Thickness x:Key="Outside_thinkness"   />
     </UserControl.Resources>
-    
-    
 
-    <Border Background="{StaticResource Background_White}"
-            BorderBrush="{StaticResource Background_Black}"
-            BorderThickness="0.5"
-            Padding="0" Margin="0">
+    <Border Style="{DynamicResource BorderCustomStyle.Primary}">
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseLeftButtonDown">
+                <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                            MethodName="DragMove"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+        
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <Border x:Name="border_caption"
-                    Grid.Row="0"
-                    Background="White"
-                    BorderThickness="0.3"
-                    BorderBrush="Black">
+            <Border Style="{DynamicResource BorderCustomStyle.NonThickness}">
 
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseLeftButtonDown">
-                        <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                                            MethodName="DragMove"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-
-                <Grid Height="30">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="35"/>
@@ -72,19 +63,17 @@
 
                     <TextBlock x:Name="title_text"
                                Grid.Column="0"
-                       Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Title}"
-                       VerticalAlignment="Center"
-                               HorizontalAlignment="Left">
+                               Text="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=Title}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left" />
 
-                    </TextBlock>
                     <Button x:Name="close" 
                             Grid.Column="1" 
                             IsCancel="True"
                             Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
-                            Height="30"
-                            VerticalAlignment="Center"
-                            Padding="0" Margin="0">
-                        <fa:IconImage Icon="WindowClose" />
+                            Style="{DynamicResource CustomButtonStyle.NonThickness.Control.Close}">
+                        
+                        <fa:IconImage Icon="Xmark" Foreground="Crimson" />
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
@@ -132,7 +121,8 @@
                         <CheckBox Content="项目丢失" IsChecked="{Binding LinkMark.IsLose}"  />
                     </Grid>
                 </Border>
-                <Button Content="确认" Width="250" Height="25" Margin="15">
+                <Button Content="确认" Width="250" Height="30" Margin="15"
+                        Style="{DynamicResource CustomButtonStyle.Primary}">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
                             <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"

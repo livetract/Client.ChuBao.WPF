@@ -4,5 +4,12 @@
 
     <SolidColorBrush x:Key="Boarder.Background" Color="White" />
     <SolidColorBrush x:Key="Boarder.BorderBrush" Color="Black" />
-    
+
+
+    <SolidColorBrush x:Key="Brush.Primary.Foreground" Color="RoyalBlue" />
+    <SolidColorBrush x:Key="Brush.Success.Foreground" Color="Green" />
+    <SolidColorBrush x:Key="Brush.Remains.Foreground" Color="Lavender" />
+    <SolidColorBrush x:Key="Brush.Warning.Foreground" Color="Crimson" />
+
+
 </ResourceDictionary>

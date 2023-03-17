@@ -54,19 +54,34 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\BoardCustomStyle.xaml">
+    <Page Update="Styles\CustomBoardStyle.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\CustomButtonStyle.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Styles\CustomIconImageStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\CustomItemsControlStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\CustomRadioButtonStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\CustomScrollViewerStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Styles\CustomSolidColorBrush.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\ListBoxCustomStyle.xaml">
+    <Page Update="Styles\CustomListBoxStyle.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\TextBlockCustomStyle.xaml">
+    <Page Update="Styles\CustomTextBlockStyle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\CustomTextBoxTemplate.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ContactView.xaml">

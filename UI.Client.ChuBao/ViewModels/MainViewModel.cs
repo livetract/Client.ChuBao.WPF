@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using UI.Client.ChuBao.Components;
 using UI.Client.ChuBao.Views;
@@ -13,11 +12,11 @@ namespace UI.Client.ChuBao.ViewModels
 
         public MainViewModel(ILogger<MainViewModel> logger)
         {
-            CurrentView = App.AppHost!.Services.GetRequiredService<DefaultBlankViewComponent>();
+            CurrentView = new DefaultBlankViewComponent();
 
             NavigateToContactListCommand = new RelayCommand(ExecuteToContactList);
             NavigateToDashboardCommand = new RelayCommand(() =>{
-                CurrentView = App.AppHost!.Services.GetRequiredService<DashboardView>();
+                CurrentView = new DashboardView();
             });
             this._logger = logger;
         }
@@ -28,7 +27,7 @@ namespace UI.Client.ChuBao.ViewModels
         private void ExecuteToContactList()
         {
             _logger.LogInformation("打开联系人列表");
-            CurrentView = App.AppHost!.Services.GetRequiredService<ContactView>();
+            CurrentView = new ContactView();
         }
 
         #endregion
@@ -36,7 +35,6 @@ namespace UI.Client.ChuBao.ViewModels
 
         #region Commands
 
-        //public RelayCommand SwitchPageCommand { get; set; }
         public RelayCommand NavigateToDashboardCommand { get; set; }
         public RelayCommand NavigateToContactListCommand { get; set; }
 
