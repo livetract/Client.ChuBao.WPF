@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -95,7 +96,14 @@ namespace Access.Client.ChuBao.Services
         {
             var url = _client.BaseAddress + "getcontactlist";
             var reponse = await _client.GetAsync(url);
-            if (!reponse.IsSuccessStatusCode) { return new List<LinkListDto>(); }
+            if (!reponse.IsSuccessStatusCode) 
+            { 
+                if(reponse.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    // 重新登录
+                }
+                return new List<LinkListDto>(); 
+            }
             var dtos = await reponse.Content.ReadFromJsonAsync<List<LinkListDto>>(new JsonSerializerOptions(JsonSerializerDefaults.Web));
             return dtos;
         }

@@ -60,7 +60,7 @@ namespace UI.Client.ChuBao
             await AppHost!.StartAsync();
             try
             {
-                var start = AppHost!.Services.GetRequiredService<MainWindow>();
+                var start = AppHost!.Services.GetRequiredService<LoginWindow>();
                 if (start == null)
                 {
                     return;

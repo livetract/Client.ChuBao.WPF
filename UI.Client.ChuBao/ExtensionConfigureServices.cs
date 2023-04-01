@@ -21,6 +21,7 @@ namespace UI.Client.ChuBao
             services.AddScoped<ContactViewModel>();
             services.AddScoped<DashboardViewModel>();
             services.AddScoped<LinkDetailViewModel>();
+            services.AddScoped<LoginViewModel>();
         }
 
         public static void ConfigureViews(this IServiceCollection services)
@@ -35,6 +36,7 @@ namespace UI.Client.ChuBao
             services.AddScoped<AddLinkItemDialog>();
             services.AddScoped<EditLinkItemDialog>();
             services.AddScoped<EditLinkMarkDialog>();
+            services.AddScoped<LoginWindow>();
         }
 
         public static void ConfigureCustomServices(this IServiceCollection services, IConfiguration configuration)
