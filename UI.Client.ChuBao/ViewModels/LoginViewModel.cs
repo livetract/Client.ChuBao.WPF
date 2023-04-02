@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UI.Client.ChuBao.ViewModels
 {
-    public class LoginViewModel : ObservableObject
+    public class LoginViewModel : ObservableValidator
     {
         
         public LoginViewModel()
@@ -24,8 +24,9 @@ namespace UI.Client.ChuBao.ViewModels
                 
             }
 
+            return;
 
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
 
@@ -36,13 +37,32 @@ namespace UI.Client.ChuBao.ViewModels
 
         private string _username;
 
-        [Required(ErrorMessage ="用户名不能为空")]
-        public string Username { get => _username; set => SetProperty(ref _username, value); }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "用户名不能为空")]
+        public string Username { get => _username; 
+            set 
+            { 
+                SetProperty(ref _username, value, validate: true);
+                IsLoginBtnEnable = !HasErrors;
+            } 
+        }
 
         private string _password;
 
-        [Required(ErrorMessage ="密码不能为空哦")]
-        public string Password { get => _password; set => SetProperty(ref _password, value);}
+        [Required(AllowEmptyStrings = false, ErrorMessage = "密码不能为空哦")]
+        public string Password
+        {
+            get => _password;
+            set
+            {
+                SetProperty(ref _password, value, true);
+                IsLoginBtnEnable = !HasErrors;
+            }
+        }
+
+        private bool _isLoginBtnEnable;
+
+        public bool IsLoginBtnEnable { get => _isLoginBtnEnable; set => SetProperty(ref _isLoginBtnEnable, value); }
 
     }
 }

@@ -6,7 +6,8 @@
     <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
     <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
     <SolidColorBrush x:Key="TextBox.Normal.Border" Color="Gray"/>
-    <!--<SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>-->
+    <SolidColorBrush x:Key="TextBox.Focus.Border.Validate.Error" Color="Red"/>
+    <SolidColorBrush x:Key="TextBox.Focus.Border.Normal" Color="Gray"/>
 
 
     <Style x:Key="TextBoxFocusVisualStyle" TargetType="{x:Type Control}">
@@ -19,20 +20,38 @@
         </Setter>
     </Style>
 
+    <Style x:Key="CustomTextBoxStyle.Validate" TargetType="TextBox">
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <StackPanel>
+                        <Border BorderBrush="{StaticResource TextBox.Focus.Border.Validate.Error}"
+                                BorderThickness="{Binding ElementName=TextboxAdornedElement,
+                            Path=AdornedElement.(TextBox.BorderThickness)}">
+                            <AdornedElementPlaceholder x:Name="TextboxAdornedElement" />
+                        </Border>
+                        <TextBlock Text="{Binding ElementName=TextboxAdornedElement,
+                            Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" 
+                                   Foreground="{StaticResource TextBox.Focus.Border.Validate.Error}"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-    <ControlTemplate x:Key="CustomTextBoxTemplate.Primary" TargetType="{x:Type TextBoxBase}">
+    <ControlTemplate x:Key="CustomTextBoxTemplate.Thickness.Single" TargetType="{x:Type TextBoxBase}">
         <Border x:Name="border" 
                 Background="{TemplateBinding Background}" 
-                BorderBrush="{TemplateBinding BorderBrush}" 
-                BorderThickness="{TemplateBinding BorderThickness}" 
+                BorderBrush="{StaticResource TextBox.Normal.Border}" 
+                BorderThickness="0 0 0 0.3" 
                 SnapsToDevicePixels="True">
-            
+
             <ScrollViewer x:Name="PART_ContentHost" 
                           Focusable="false" 
                           HorizontalScrollBarVisibility="Hidden" 
                           VerticalScrollBarVisibility="Hidden"/>
         </Border>
-        
+
         <ControlTemplate.Triggers>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="Opacity" TargetName="border" Value="0.56"/>
@@ -46,11 +65,12 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="CustomTextBoxTemplate.Thickness.Single" TargetType="{x:Type TextBoxBase}">
+
+    <ControlTemplate x:Key="CustomTextBoxTemplate.Primary" TargetType="{x:Type TextBoxBase}">
         <Border x:Name="border" 
                 Background="{TemplateBinding Background}" 
-                BorderBrush="{StaticResource TextBox.Normal.Border}" 
-                BorderThickness="0 0 0 0.3" 
+                BorderBrush="{TemplateBinding BorderBrush}" 
+                BorderThickness="{TemplateBinding BorderThickness}" 
                 SnapsToDevicePixels="True">
 
             <ScrollViewer x:Name="PART_ContentHost" 
