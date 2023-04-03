@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
+using UI.Client.ChuBao.ViewModels;
 
 namespace UI.Client.ChuBao
 {
@@ -9,6 +11,7 @@ namespace UI.Client.ChuBao
     {
         public LoginWindow()
         {
+            this.DataContext = App.AppHost!.Services.GetRequiredService<LoginViewModel>();
             InitializeComponent();
         }
     }

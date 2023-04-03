@@ -14,6 +14,7 @@ namespace UI.Client.ChuBao
     public partial class App : Application
     {
         public static IHost? AppHost { get; private set; }
+        public static string AccessToken { get; set; } = string.Empty;
         public App()
         {
             var builder = Host.CreateDefaultBuilder();

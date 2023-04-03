@@ -51,7 +51,18 @@ namespace UI.Client.ChuBao
                     http.BaseAddress = new Uri(configuration.GetSection("Endpoints:Contact").Value ?? "");
                     http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     http.DefaultRequestHeaders.UserAgent.TryParseAdd("wpf-client-chubao");
+                    //http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(scheme:"Bearer", parameter: App.AccessToken);
+                    http.DefaultRequestHeaders.Add("Authorization", $"Bearer {App.AccessToken}");
                 });
+
+            services.AddHttpClient<IAuthService, AuthService>(
+                http =>
+                {
+                    http.BaseAddress = new Uri(configuration.GetSection("Endpoints:Account").Value ?? "");
+                    http.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    http.DefaultRequestHeaders.UserAgent.TryParseAdd("wpf-client-chubao");
+                }
+                );
         }
     }
 }

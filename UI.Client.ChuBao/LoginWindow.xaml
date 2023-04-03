@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         xmlns:vm="clr-namespace:UI.Client.ChuBao.ViewModels"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" d:DataContext="{d:DesignInstance Type=vm:LoginViewModel}"
         mc:Ignorable="d" 
         Height="400" Width="600"
         WindowStartupLocation="CenterScreen"
@@ -12,11 +13,17 @@
         AllowsTransparency="True"
         Background="Transparent">
 
-    <Window.DataContext>
-        <vm:LoginViewModel x:Name="loginvm"/>
-    </Window.DataContext>
+    <Window.Resources>
+        
+    </Window.Resources>
     
-    
+    <i:Interaction.Triggers>
+        <i:DataTrigger Binding="{Binding IsCloseLoginWindow}" Value="True">
+            <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}" 
+                                MethodName="Close" />
+        </i:DataTrigger>
+    </i:Interaction.Triggers>
+
     <Border Background="RoyalBlue">
         <Grid>
             <Grid.RowDefinitions>

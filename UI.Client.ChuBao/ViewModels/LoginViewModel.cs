@@ -1,32 +1,41 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Access.Client.ChuBao.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
+using Core.Client.ChuBao.Dtos;
+using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel.DataAnnotations;
 
 namespace UI.Client.ChuBao.ViewModels
 {
     public class LoginViewModel : ObservableValidator
     {
-        
-        public LoginViewModel()
+        private readonly IAuthService _authService;
+
+
+
+        public LoginViewModel(IAuthService authService)
         {
             
             LoginCommand = new RelayCommand (ExecuteLogin);
+            this._authService = authService;
+            IsCloseLoginWindow = false;
         }
 
-        private void ExecuteLogin()
+        private async void ExecuteLogin()
         {
-            var username = Username;
-            var password = Password;
+            var model = new LoginDto { UserName = Username,Password = Password };
+            var result = await _authService.Login(model);
+            App.AccessToken = result.Token;
 
-            if (username != null && password != null) 
+            if (result.IsLogin)
             {
-                
+                var win = App.AppHost!.Services.GetRequiredService<MainWindow>();
+                win.Show();
+                if (win.IsActive)
+                {
+                    IsCloseLoginWindow = true;
+                }
             }
-
-            return;
-
-            // throw new NotImplementedException();
         }
 
 
@@ -35,11 +44,11 @@ namespace UI.Client.ChuBao.ViewModels
         public RelayCommand LoginCommand { get; set; }
 
 
-        private string _username;
+        private string? _username;
 
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "用户名不能为空")]
-        public string Username { get => _username; 
+        public string? Username { get => _username; 
             set 
             { 
                 SetProperty(ref _username, value, validate: true);
@@ -47,10 +56,10 @@ namespace UI.Client.ChuBao.ViewModels
             } 
         }
 
-        private string _password;
+        private string? _password;
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "密码不能为空哦")]
-        public string Password
+        public string? Password
         {
             get => _password;
             set
@@ -60,9 +69,11 @@ namespace UI.Client.ChuBao.ViewModels
             }
         }
 
-        private bool _isLoginBtnEnable;
+        private bool? _isLoginBtnEnable;
+        public bool? IsLoginBtnEnable { get => _isLoginBtnEnable; set => SetProperty(ref _isLoginBtnEnable, value); }
 
-        public bool IsLoginBtnEnable { get => _isLoginBtnEnable; set => SetProperty(ref _isLoginBtnEnable, value); }
+        private bool? _isCloseLoginWindow;
+        public bool? IsCloseLoginWindow { get => _isCloseLoginWindow; set => SetProperty(ref _isCloseLoginWindow, value); }
 
     }
 }
