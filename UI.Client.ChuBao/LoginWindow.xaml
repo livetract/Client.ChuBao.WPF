@@ -24,7 +24,15 @@
         </i:DataTrigger>
     </i:Interaction.Triggers>
 
-    <Border Background="RoyalBlue">
+    <Border Style="{DynamicResource BorderCustomStyle.Primary}"
+            Background="White">
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseLeftButtonDown">
+                <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                            MethodName="DragMove"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+        
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -32,6 +40,23 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Border x:Name="head" Grid.Row="0">
+                    <Grid Height="35" VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="35"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="1"
+                            Style="{DynamicResource CustomButtonStyle.NonThickness.Control.Close}"
+                                IsCancel="True">
+                            <fa:IconImage Icon="Xmark" Foreground="Red" />
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}" 
+                                MethodName="Close" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        </Button>
+                    </Grid>
 
             </Border>
 
@@ -39,13 +64,18 @@
                 <StackPanel>
                     <TextBox x:Name="usernametext"
                              Style="{DynamicResource CustomTextBoxStyle.Validate}"
+                             BorderThickness="0 0 0 0.3"
                              Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0 20 0 20" />
                     
                     <TextBox Style="{DynamicResource CustomTextBoxStyle.Validate}"
+                             BorderThickness="0 0 0 0.3"
                         Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True }" Margin="0 0 0 20"/>
                     <Button Command="{Binding LoginCommand}" 
                             IsEnabled="{Binding IsLoginBtnEnable}"
-                        Margin="0 0 0 20" Content="登录"/>
+                            Style="{DynamicResource CustomButtonStyle.Primary}"
+                            IsCancel="True"
+                            IsDefault="True"
+                            Margin="0 0 0 20" Content="登录"/>
                 </StackPanel>
             </Border>
 

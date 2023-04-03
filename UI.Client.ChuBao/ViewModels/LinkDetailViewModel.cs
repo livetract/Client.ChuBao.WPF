@@ -30,19 +30,18 @@ namespace UI.Client.ChuBao.ViewModels
 
         private async void ExecuteAddNewRecordAsync()
         {
-            if (string.IsNullOrEmpty(RecordContent)) return;
+            if (string.IsNullOrEmpty(RecordContent)) 
+                return;
             var record = new RecordCreateDto
             {
-                ContactId = Link.Id,
+                ContactId = Link!.Id,
                 Content = RecordContent,
                 Booker = "hyd"
             };
             var result = await _linkService.AddLinkRecordAsync(record);
             if (result)
             {
-                var rs = await _linkService.GetRecordListAsync(Link.Id);
-                var records = rs.OrderByDescending(x => x.AddTime);
-                Records = new ObservableCollection<RecordDto>(records);
+                ExecuteLoadLinkMarkRecord(Link!.Id);
                 RecordContent = string.Empty;
             }
         }
@@ -82,7 +81,7 @@ namespace UI.Client.ChuBao.ViewModels
             {
                 if (SetProperty(ref _link, value))
                 {
-                    if (Link.Id != Guid.Empty)
+                    if (Link!.Id != Guid.Empty)
                     {
                         ExecuteLoadLinkMarkRecord(Link.Id);
                     }
