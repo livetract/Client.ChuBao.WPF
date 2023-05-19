@@ -2,7 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Windows;
-using Serilog;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
@@ -17,36 +16,27 @@ namespace UI.Client.ChuBao
         public static string AccessToken { get; set; } = string.Empty;
         public App()
         {
-            var builder = Host.CreateDefaultBuilder();
-            builder.UseSerilog((host,loggerConfiguration) =>
-            {
-                loggerConfiguration
-                .WriteTo
-                .File(path: "Logs/log", rollingInterval: RollingInterval.Day);
-            });
-            builder.ConfigureServices(ConfigureServices);
-            builder.ConfigureAppConfiguration(ConfigureAppConfiguration);
-
+            var builder = Host.CreateDefaultBuilder()
+                .ConfigureAppConfiguration(ConfigureAppConfiguration)
+                .ConfigureServices(ConfigureServices);
 
             AppHost= builder.Build();
-            
-
             AppHost.RunAsync();
         }
 
-        private void ConfigureAppConfiguration(HostBuilderContext context, IConfigurationBuilder builder)
+        private void ConfigureAppConfiguration(HostBuilderContext context, IConfigurationBuilder config)
         {
             var env = context.HostingEnvironment;
 
-            builder.Sources.Clear();
+            config.Sources.Clear();
 
-            builder.SetBasePath(Directory.GetCurrentDirectory());
-            builder
+            config.SetBasePath(Directory.GetCurrentDirectory());
+            config
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
-            builder.AddEnvironmentVariables();
+            config.AddEnvironmentVariables();
 
-            builder.Build();
+            config.Build();
         }
 
         private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
@@ -61,7 +51,8 @@ namespace UI.Client.ChuBao
             await AppHost!.StartAsync();
             try
             {
-                var start = AppHost!.Services.GetRequiredService<LoginWindow>();
+                //var start = AppHost!.Services.GetRequiredService<LoginWindow>();
+                var start = AppHost!.Services.GetRequiredService<MainWindow>();
                 if (start == null)
                 {
                     return;

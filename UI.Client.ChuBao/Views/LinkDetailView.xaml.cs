@@ -3,14 +3,14 @@ using System;
 using System.Windows.Controls;
 using UI.Client.ChuBao.ViewModels;
 
-namespace UI.Client.ChuBao.Components
+namespace UI.Client.ChuBao.Views
 {
     /// <summary>
     /// Interaction logic for LinkDetailComponent.xaml
     /// </summary>
-    public partial class LinkDetailComponent : UserControl
+    public partial class LinkDetailView : UserControl
     {
-        public LinkDetailComponent()
+        public LinkDetailView()
         {
             this.DataContext = App.AppHost!.Services.GetRequiredService<LinkDetailViewModel>();
             InitializeComponent();

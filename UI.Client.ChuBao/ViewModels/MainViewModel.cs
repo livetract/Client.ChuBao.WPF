@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using UI.Client.ChuBao.Components;
 using UI.Client.ChuBao.Views;
 
 namespace UI.Client.ChuBao.ViewModels
@@ -12,8 +11,6 @@ namespace UI.Client.ChuBao.ViewModels
 
         public MainViewModel(ILogger<MainViewModel> logger)
         {
-            CurrentView = new DefaultBlankViewComponent();
-
             NavigateToContactListCommand = new RelayCommand(ExecuteToContactList);
             NavigateToDashboardCommand = new RelayCommand(() =>{
                 CurrentView = new DashboardView();

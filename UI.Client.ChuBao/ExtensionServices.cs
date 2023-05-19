@@ -1,48 +1,48 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
 using System;
-using UI.Client.ChuBao.Components;
-using UI.Client.ChuBao.Dialogs;
 using UI.Client.ChuBao.ViewModels;
 using UI.Client.ChuBao.Views;
 using Microsoft.Extensions.Configuration;
 using UI.Client.ChuBao.Commons;
 using Access.Client.ChuBao.Services;
+using UI.Client.ChuBao.Views.Dialogs;
 
 namespace UI.Client.ChuBao
 {
-    public static class ExtensionConfigureServices
+    public static class ExtensionServices
     {
+        public static void ConfigureViews(this IServiceCollection services)
+        {
+            services.AddSingleton<MainWindow>();
+            services.AddSingleton<LoginWindow>();
+            services.AddSingleton<PopupWindow>();
+
+            services.AddScoped<ContactView>();
+            services.AddScoped<DashboardView>();
+            services.AddScoped<LinkDetailView>();
+
+            services.AddScoped<AddLinkItemForm>();
+            services.AddScoped<EditLinkItemDialog>();
+            services.AddScoped<EditLinkMarkDialog>();
+        }
         public static void ConfigureViewModels(this IServiceCollection services)
         {
-            services.AddTransient<MainViewModel>();
-            services.AddScoped<DialogWindow>();
+            services.AddSingleton<MainViewModel>();
+            services.AddSingleton<LoginViewModel>();
 
             services.AddScoped<ContactViewModel>();
             services.AddScoped<DashboardViewModel>();
             services.AddScoped<LinkDetailViewModel>();
-            services.AddScoped<LoginViewModel>();
-        }
 
-        public static void ConfigureViews(this IServiceCollection services)
-        {
-            services.AddTransient<MainWindow>();
-            services.AddScoped<ContactView>();
-            services.AddScoped<DashboardView>();
-
-            services.AddScoped<DefaultBlankViewComponent>();
-            services.AddScoped<LinkDetailComponent>();
-
-            services.AddScoped<AddLinkItemDialog>();
-            services.AddScoped<EditLinkItemDialog>();
-            services.AddScoped<EditLinkMarkDialog>();
-            services.AddScoped<LoginWindow>();
+            services.AddScoped<AddLinkViewModel>();
+            services.AddScoped<EditLinkViewModel>();
         }
 
         public static void ConfigureCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IDialogHandler,DialogHandler>();
             services.AddAutoMapper(typeof(MapperProfile));
+            services.AddTransient<IPopupManager, PopupManager>();
 
 
             services.AddHttpClient<ILinkService, LinkService>(
@@ -63,6 +63,13 @@ namespace UI.Client.ChuBao
                     http.DefaultRequestHeaders.UserAgent.TryParseAdd("wpf-client-chubao");
                 }
                 );
+        }
+        public static void AddFormFactory<TForm>(this IServiceCollection services)
+            where TForm : class
+        {
+            services.AddTransient<TForm>();
+            services.AddSingleton<Func<TForm>>(x => () => x.GetRequiredService<TForm>());
+            services.AddSingleton<IAbstractFactory<TForm>, AbstractFactory<TForm>>();
         }
     }
 }

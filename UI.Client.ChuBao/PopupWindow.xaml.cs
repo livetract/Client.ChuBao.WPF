@@ -10,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UI.Client.ChuBao.Components
+namespace UI.Client.ChuBao
 {
     /// <summary>
-    /// Interaction logic for DefaultBlankViewComponent.xaml
+    /// Interaction logic for PopupWindow.xaml
     /// </summary>
-    public partial class DefaultBlankViewComponent : UserControl
+    public partial class PopupWindow : Window
     {
-        public DefaultBlankViewComponent()
+        public PopupWindow()
         {
             InitializeComponent();
         }

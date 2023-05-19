@@ -3,7 +3,7 @@ using System;
 using System.Windows.Controls;
 using UI.Client.ChuBao.ViewModels;
 
-namespace UI.Client.ChuBao.Dialogs
+namespace UI.Client.ChuBao.Views.Dialogs
 {
     /// <summary>
     /// Interaction logic for EditLinkItemDialog.xaml
@@ -12,7 +12,7 @@ namespace UI.Client.ChuBao.Dialogs
     {
         public EditLinkItemDialog()
         {
-            this.DataContext = App.AppHost!.Services.GetRequiredService<ContactViewModel>();
+            this.DataContext = App.AppHost!.Services.GetRequiredService<EditLinkViewModel>();
             InitializeComponent();
         }
     }

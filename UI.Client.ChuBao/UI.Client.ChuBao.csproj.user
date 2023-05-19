@@ -7,25 +7,22 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Components\DefaultBlankViewComponent.xaml.cs">
+    <Compile Update="PopupWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Components\LinkDetailComponent.xaml.cs">
+    <Compile Update="Views\LinkDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Dialogs\AddLinkItemDialog.xaml.cs">
+    <Compile Update="Views\AddLinkItemForm.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Dialogs\EditLinkItemDialog.xaml.cs">
+    <Compile Update="Views\EditLinkItemDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Dialogs\EditLinkMarkDialog.xaml.cs">
+    <Compile Update="Views\EditLinkMarkDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="LoginWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="DialogWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\ContactView.xaml.cs">
@@ -36,58 +33,55 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Components\DefaultBlankViewComponent.xaml">
+    <Page Update="PopupWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Components\LinkDetailComponent.xaml">
+    <Page Update="Views\LinkDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Dialogs\AddLinkItemDialog.xaml">
+    <Page Update="Views\AddLinkItemForm.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Dialogs\EditLinkItemDialog.xaml">
+    <Page Update="Views\EditLinkItemDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Dialogs\EditLinkMarkDialog.xaml">
+    <Page Update="Views\EditLinkMarkDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="LoginWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="DialogWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\CustomBoardStyle.xaml">
+    <Page Update="Resources\CustomBoard.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\CustomButtonStyle.xaml">
+    <Page Update="Resources\CustomButton.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\CustomIconImageStyle.xaml">
+    <Page Update="Resources\CustomIconImage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\CustomItemsControlStyle.xaml">
+    <Page Update="Resources\CustomItemsControl.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\CustomRadioButtonStyle.xaml">
+    <Page Update="Resources\CustomRadioButton.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\CustomScrollViewerStyle.xaml">
+    <Page Update="Resources\CustomScrollViewer.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\CustomSolidColorBrush.xaml">
+    <Page Update="Resources\CustomSolidColorBrush.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\CustomListBoxStyle.xaml">
+    <Page Update="Resources\CustomListBox.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\CustomTextBlockStyle.xaml">
+    <Page Update="Resources\CustomTextBlock.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Styles\CustomTextBoxTemplate.xaml">
+    <Page Update="Resources\CustomTextBox.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\ContactView.xaml">

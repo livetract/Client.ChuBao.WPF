@@ -1,17 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Windows.Controls;
 using UI.Client.ChuBao.ViewModels;
 
-namespace UI.Client.ChuBao.Dialogs
+namespace UI.Client.ChuBao.Views.Dialogs
 {
     /// <summary>
-    /// Interaction logic for AddLinkItemDialog.xaml
+    /// Interaction logic for EditLinkMarkDialog.xaml
     /// </summary>
-    public partial class AddLinkItemDialog : UserControl
+    public partial class EditLinkMarkDialog : UserControl
     {
-        public AddLinkItemDialog()
+        public EditLinkMarkDialog()
         {
+
             this.DataContext = App.AppHost!.Services.GetRequiredService<ContactViewModel>();
             InitializeComponent();
         }

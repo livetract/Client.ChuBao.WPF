@@ -16,34 +16,20 @@ namespace UI.Client.ChuBao.ViewModels
 
         public LinkDetailViewModel(ILinkService linkService)
         {
-            this.IsActive = true;
-
-            Link = new LinkDto();
-            Mark = new MarkDto();
-            Records = new ObservableCollection<RecordDto>();
-
+            IsActive = true;
             SubmitNewRecordCommand = new RelayCommand(ExecuteAddNewRecordAsync);
-
-            this._linkService = linkService;
-
+            _linkService = linkService;
         }
 
+        #region Executions
+
+
+        #endregion
         private async void ExecuteAddNewRecordAsync()
         {
-            if (string.IsNullOrEmpty(RecordContent)) 
+            if (string.IsNullOrEmpty(RecordContent))
                 return;
-            var record = new RecordCreateDto
-            {
-                ContactId = Link!.Id,
-                Content = RecordContent,
-                Booker = "hyd"
-            };
-            var result = await _linkService.AddLinkRecordAsync(record);
-            if (result)
-            {
-                ExecuteLoadLinkMarkRecord(Link!.Id);
-                RecordContent = string.Empty;
-            }
+
         }
 
         private async void ExecuteLoadLinkMarkRecord(Guid id)
@@ -55,38 +41,38 @@ namespace UI.Client.ChuBao.ViewModels
             Records = new ObservableCollection<RecordDto>(records);
         }
 
+        #region Messenger
+
         protected override void OnActivated()
         {
-            WeakReferenceMessenger.Default.Register<LinkDetailViewModel, ValueChangedMessage<LinkDto>>(this, (r, m) => r.Link = m.Value);
+            WeakReferenceMessenger.Default.Register<ValueChangedMessage<LinkDto>, string>(this, "ToLinkDetailView", (r, m) => Link = m.Value);
 
             base.OnActivated();
         }
 
         protected override void OnDeactivated()
         {
+            WeakReferenceMessenger.Default.UnregisterAll(this, "ToLinkDetailView");
             base.OnDeactivated();
         }
 
 
+        #endregion
+
+        #region Commands
 
         public RelayCommand SubmitNewRecordCommand { get; set; }
 
+        #endregion
 
+
+        #region Notification Properties
 
         private LinkDto? _link;
         public LinkDto? Link
         {
             get => _link;
-            set
-            {
-                if (SetProperty(ref _link, value))
-                {
-                    if (Link!.Id != Guid.Empty)
-                    {
-                        ExecuteLoadLinkMarkRecord(Link.Id);
-                    }
-                }
-            }
+            set => SetProperty(ref _link, value);
         }
         private string? _recordContent;
         public string? RecordContent { get => _recordContent; set => SetProperty(ref _recordContent, value); }
@@ -96,6 +82,8 @@ namespace UI.Client.ChuBao.ViewModels
 
         private ObservableCollection<RecordDto>? _records;
         public ObservableCollection<RecordDto>? Records { get => _records; set => SetProperty(ref _records, value); }
+
+        #endregion
 
     }
 }

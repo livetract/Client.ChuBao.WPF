@@ -34,12 +34,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Converters\" />
-    <Folder Include="Models\" />
-    <Folder Include="Logs\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Access.Client.ChuBao\Access.Client.ChuBao.csproj" />
     <ProjectReference Include="..\Core.Client.ChuBao\Core.Client.ChuBao.csproj" />
   </ItemGroup>

@@ -42,12 +42,12 @@
 
                         <i:Interaction.Triggers>
 
-                            <i:EventTrigger EventName="MouseDoubleClick">
+                            <!--<i:EventTrigger EventName="MouseDoubleClick">
                                 <i:InvokeCommandAction Command="{Binding PopUpEditLinkCommand}"
                                            CommandParameter="{Binding ElementName=listboxlinklist, Path=SelectedItem}"/>
-                            </i:EventTrigger>
+                            </i:EventTrigger>-->
                             <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding ShowLinkDetailViewCommand}"
+                                <i:InvokeCommandAction Command="{Binding DisplayLinkDetailViewCommand}"
                                            CommandParameter="{Binding ElementName=listboxlinklist, Path=SelectedItem}"/>
                             </i:EventTrigger>
 

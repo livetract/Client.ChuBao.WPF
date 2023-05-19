@@ -9,140 +9,97 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.ObjectModel;
 using UI.Client.ChuBao.Commons;
-using UI.Client.ChuBao.Components;
-using UI.Client.ChuBao.Dialogs;
+using UI.Client.ChuBao.Views;
+using UI.Client.ChuBao.Views.Dialogs;
 
 namespace UI.Client.ChuBao.ViewModels
 {
     public class ContactViewModel : ObservableRecipient
     {
         private readonly ILinkService _linkService;
-        private readonly IDialogHandler _dialogHandler;
+        private readonly IPopupManager _popupManager;
         private readonly IMapper _mapper;
 
         public ContactViewModel(
             ILinkService linkService,
-            IDialogHandler dialogHandler,
+            IPopupManager popupManager,
             IMapper mapper
             )
         {
             this._linkService = linkService;
-            this._dialogHandler = dialogHandler;
+            this._popupManager = popupManager;
             this._mapper = mapper;
 
-            NewLink = new LinkCreateDto();
-            EditLink = new LinkDto();
-
-            this.LinkDetailView =  App.AppHost!.Services.GetRequiredService<DefaultBlankViewComponent>();
 
             ExecuteLoadLinkListAsync();
 
-            PopUpAddLinkCommand = new RelayCommand<string>(title =>
-            _dialogHandler.CreateDialog<AddLinkItemDialog>("新增联系人", App.Current.MainWindow));
-
-            PopUpEditLinkCommand = new RelayCommand<LinkListDto>(model => ExecuteCreateEditLinkDialog(model));
-            PopUpEditLinkMarkCommand = new RelayCommand<MarkDto>(title =>
-            _dialogHandler.CreateDialog<EditLinkMarkDialog>($"标签管理", App.Current.MainWindow));
+            PopUpAddLinkCommand = new RelayCommand(()=>_popupManager.CreatePopup<AddLinkItemForm>());
+            PopUpEditLinkCommand = new RelayCommand<LinkListDto>(dto => ExecutePopUpEditLinkDialog(dto));
+            //PopUpEditLinkMarkCommand = new RelayCommand<MarkDto>(_popupManager.CreatePopup<e>);
 
 
-            SubmitNewLinkItemCommand = new RelayCommand(ExcuteSubmitNewLinkItemAsync);
-            SubmitEditLinkItemCommand = new RelayCommand(ExcuteSubmitEditLinkItemAsync);
-
-            ShowLinkDetailViewCommand = new RelayCommand<LinkListDto>(model => ExecuteShowLinkDetailView(model));
+            DisplayLinkDetailViewCommand = new RelayCommand<LinkListDto>(model => ExecuteDisplayLinkDetailView(model));
 
 
         }
 
 
 
-        #region Implements
+        #region Executions
 
-        private void ExecuteShowLinkDetailView(LinkListDto? model)
+
+        private async void ExecuteLoadLinkListAsync()
+        {
+            var items = await _linkService.LoadLinkListAsync();
+            LinkList = new ObservableCollection<LinkListDto>(items);
+
+        }
+        private void ExecuteDisplayLinkDetailView(LinkListDto? model)
         {
             if (model == null)
             {
                 return;
             }
             var link = _mapper.Map<LinkDto>(model);
-            LinkDetailView = App.AppHost!.Services.GetRequiredService<LinkDetailComponent>();
-            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LinkDto>(link));
+            LinkDetailView = App.AppHost!.Services.GetRequiredService<Views.LinkDetailView>();
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LinkDto>(link), "ToLinkDetailView");
         }
 
-        private void ExecuteCreateEditLinkDialog(LinkListDto? model)
+        private void ExecutePopUpEditLinkDialog(LinkListDto? dto)
         {
-            if (model.Id == Guid.Empty)
+            if (dto is null)
             {
-                return;
+                throw new ArgumentNullException(nameof(dto));
             }
-            EditLink = _mapper.Map<LinkDto>(model);
 
-            _dialogHandler.CreateDialog<EditLinkItemDialog>($"修改信息", App.Current.MainWindow);
-        }
-
-        private async void ExcuteSubmitEditLinkItemAsync()
-        {
-            var result = await _linkService.ModifyLinkAsync(EditLink);
-            if (result)
-            {
-                EditLink = null;
-
-                ExecuteLoadLinkListAsync();
-            }
-        }
-
-        private async void ExcuteSubmitNewLinkItemAsync()
-        {
-            if (NewLink.Name == null)
-                return;
-            var result = await _linkService.AddLinkAsync(NewLink);
-            if (result)
-            {
-                NewLink = null;
-                ExecuteLoadLinkListAsync();
-            }
-        }
-        private async void ExecuteLoadLinkListAsync()
-        {
-            var items = await _linkService.LoadLinkListAsync();
-            LinkList = new ObservableCollection<LinkListDto>(items);
-
-            LinkDetailView = App.AppHost!.Services.GetRequiredService<DefaultBlankViewComponent>();
+            var link = _mapper.Map<LinkDto> (dto);
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LinkDto>(link), "ToLinkEditForm");
+            _popupManager.CreatePopup<EditLinkItemDialog>();
         }
 
         #endregion
 
         #region Commands
-        public RelayCommand SubmitNewLinkRecordCommand { get; set; }
-        public RelayCommand<LinkListDto> ShowLinkDetailViewCommand { get; set; }
 
-        public RelayCommand<string> PopUpAddLinkCommand { get; set; }
+        public RelayCommand<LinkListDto> DisplayLinkDetailViewCommand { get; set; }
+
+        public RelayCommand PopUpAddLinkCommand { get; set; }
         public RelayCommand<LinkListDto> PopUpEditLinkCommand { get; set; }
-        public RelayCommand SubmitNewLinkItemCommand { get; set; }
-        public RelayCommand SubmitEditLinkItemCommand { get; set; }
         public RelayCommand<string> CheckLinkMarkCommand { get; set; }
         public RelayCommand<MarkDto> PopUpEditLinkMarkCommand { get; set; }
 
         #endregion
 
 
-        #region ObservableObject
+        #region Notification Properties
 
         private ObservableCollection<LinkListDto>? _linkList;
 
         public ObservableCollection<LinkListDto>? LinkList { get => _linkList; set => SetProperty(ref _linkList, value); }
 
-        private LinkCreateDto? _newLink;
-        public LinkCreateDto? NewLink { get => _newLink; set=> SetProperty(ref _newLink, value); }
-
-        private LinkDto? _editLink;
-        public LinkDto? EditLink { get => _editLink; set => SetProperty(ref _editLink, value); }
-
         private object? _linkDetaiView;
 
         public object? LinkDetailView { get => _linkDetaiView; set => SetProperty(ref _linkDetaiView, value); }
-
-
-
 
         #endregion
     }

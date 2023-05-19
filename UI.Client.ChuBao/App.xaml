@@ -5,16 +5,16 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries >
-                <ResourceDictionary Source="styles/customlistboxstyle.xaml" />
-                <ResourceDictionary Source="styles/customtextblockstyle.xaml" />
-                <ResourceDictionary Source="styles/customboardstyle.xaml" />
-                <ResourceDictionary Source="styles/customsolidcolorbrush.xaml" />
-                <ResourceDictionary Source="styles/CustomButtonStyle.xaml"/>
-                <ResourceDictionary Source="styles/customradiobuttonstyle.xaml" />
-                <ResourceDictionary Source="styles/customtextboxtemplate.xaml" />
-                <ResourceDictionary Source="styles/customiconimagestyle.xaml" />
-                <ResourceDictionary Source="styles/customitemscontrolstyle.xaml" />
-                <ResourceDictionary Source="styles/customscrollviewerstyle.xaml" />
+                <ResourceDictionary Source="Resources/customlistbox.xaml" />
+                <ResourceDictionary Source="Resources/customtextblock.xaml" />
+                <ResourceDictionary Source="Resources/customboard.xaml" />
+                <ResourceDictionary Source="Resources/customsolidcolorbrush.xaml" />
+                <ResourceDictionary Source="Resources/CustomButton.xaml"/>
+                <ResourceDictionary Source="Resources/customradiobutton.xaml" />
+                <ResourceDictionary Source="Resources/customtextbox.xaml" />
+                <ResourceDictionary Source="Resources/customiconimage.xaml" />
+                <ResourceDictionary Source="Resources/customitemscontrol.xaml" />
+                <ResourceDictionary Source="Resources/customscrollviewer.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
          
