@@ -13,10 +13,10 @@
     <Compile Update="Views\LinkDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AddLinkItemForm.xaml.cs">
+    <Compile Update="Views\AddLinkForm.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\EditLinkItemDialog.xaml.cs">
+    <Compile Update="Views\EditLinkForm.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\EditLinkMarkDialog.xaml.cs">
@@ -39,10 +39,10 @@
     <Page Update="Views\LinkDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AddLinkItemForm.xaml">
+    <Page Update="Views\AddLinkForm.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\EditLinkItemDialog.xaml">
+    <Page Update="Views\EditLinkForm.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\EditLinkMarkDialog.xaml">

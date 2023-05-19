@@ -10,7 +10,6 @@ using System;
 using System.Collections.ObjectModel;
 using UI.Client.ChuBao.Commons;
 using UI.Client.ChuBao.Views;
-using UI.Client.ChuBao.Views.Dialogs;
 
 namespace UI.Client.ChuBao.ViewModels
 {
@@ -23,6 +22,7 @@ namespace UI.Client.ChuBao.ViewModels
         public ContactViewModel(
             ILinkService linkService,
             IPopupManager popupManager,
+            IAbstractFactory<PopupWindow> factory,
             IMapper mapper
             )
         {
@@ -33,7 +33,7 @@ namespace UI.Client.ChuBao.ViewModels
 
             ExecuteLoadLinkListAsync();
 
-            PopUpAddLinkCommand = new RelayCommand(()=>_popupManager.CreatePopup<AddLinkItemForm>());
+            PopUpAddLinkCommand = new RelayCommand(()=>_popupManager.CreatePopup<AddLinkForm>(App.Current.MainWindow));
             PopUpEditLinkCommand = new RelayCommand<LinkListDto>(dto => ExecutePopUpEditLinkDialog(dto));
             //PopUpEditLinkMarkCommand = new RelayCommand<MarkDto>(_popupManager.CreatePopup<e>);
 
@@ -61,7 +61,7 @@ namespace UI.Client.ChuBao.ViewModels
                 return;
             }
             var link = _mapper.Map<LinkDto>(model);
-            LinkDetailView = App.AppHost!.Services.GetRequiredService<Views.LinkDetailView>();
+            LinkDetailView = App.AppHost!.Services.GetRequiredService<LinkDetailView>();
             WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LinkDto>(link), "ToLinkDetailView");
         }
 
@@ -73,8 +73,8 @@ namespace UI.Client.ChuBao.ViewModels
             }
 
             var link = _mapper.Map<LinkDto> (dto);
-            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LinkDto>(link), "ToLinkEditForm");
-            _popupManager.CreatePopup<EditLinkItemDialog>();
+            WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LinkDto>(link), "ToEditLinkForm");
+            _popupManager.CreatePopup<EditLinkForm>(App.Current.MainWindow);
         }
 
         #endregion

@@ -6,7 +6,6 @@ using UI.Client.ChuBao.Views;
 using Microsoft.Extensions.Configuration;
 using UI.Client.ChuBao.Commons;
 using Access.Client.ChuBao.Services;
-using UI.Client.ChuBao.Views.Dialogs;
 
 namespace UI.Client.ChuBao
 {
@@ -16,15 +15,15 @@ namespace UI.Client.ChuBao
         {
             services.AddSingleton<MainWindow>();
             services.AddSingleton<LoginWindow>();
-            services.AddSingleton<PopupWindow>();
+            services.AddScoped<PopupWindow>();
 
             services.AddScoped<ContactView>();
             services.AddScoped<DashboardView>();
             services.AddScoped<LinkDetailView>();
 
-            services.AddScoped<AddLinkItemForm>();
-            services.AddScoped<EditLinkItemDialog>();
-            services.AddScoped<EditLinkMarkDialog>();
+            services.AddScoped<AddLinkForm>();
+            services.AddScoped<EditLinkForm>();
+            //services.AddScoped<EditLinkMarkDialog>();
         }
         public static void ConfigureViewModels(this IServiceCollection services)
         {
@@ -43,6 +42,7 @@ namespace UI.Client.ChuBao
         {
             services.AddAutoMapper(typeof(MapperProfile));
             services.AddTransient<IPopupManager, PopupManager>();
+            services.AddFormFactory<PopupWindow>();
 
 
             services.AddHttpClient<ILinkService, LinkService>(
