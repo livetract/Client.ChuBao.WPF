@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using UI.Client.ChuBao.Views;
 
@@ -7,15 +8,13 @@ namespace UI.Client.ChuBao.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
-        private readonly ILogger<MainViewModel> _logger;
 
-        public MainViewModel(ILogger<MainViewModel> logger)
+        public MainViewModel()
         {
             NavigateToContactListCommand = new RelayCommand(ExecuteToContactList);
             NavigateToDashboardCommand = new RelayCommand(() =>{
                 CurrentView = new DashboardView();
             });
-            this._logger = logger;
         }
 
 
@@ -23,8 +22,7 @@ namespace UI.Client.ChuBao.ViewModels
 
         private void ExecuteToContactList()
         {
-            _logger.LogInformation("打开联系人列表");
-            CurrentView = new ContactView();
+            CurrentView = App.AppHost!.Services.GetRequiredService<LinkmanView>();
         }
 
         #endregion

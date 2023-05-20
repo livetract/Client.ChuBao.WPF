@@ -22,7 +22,6 @@ namespace UI.Client.ChuBao.ViewModels
         public ContactViewModel(
             ILinkService linkService,
             IPopupManager popupManager,
-            IAbstractFactory<PopupWindow> factory,
             IMapper mapper
             )
         {
@@ -33,7 +32,7 @@ namespace UI.Client.ChuBao.ViewModels
 
             ExecuteLoadLinkListAsync();
 
-            PopUpAddLinkCommand = new RelayCommand(()=>_popupManager.CreatePopup<AddLinkForm>(App.Current.MainWindow));
+            PopUpAddLinkCommand = new RelayCommand(()=>_popupManager.CreatePopup<LinkAddForm>(App.Current.MainWindow));
             PopUpEditLinkCommand = new RelayCommand<LinkListDto>(dto => ExecutePopUpEditLinkDialog(dto));
             //PopUpEditLinkMarkCommand = new RelayCommand<MarkDto>(_popupManager.CreatePopup<e>);
 
@@ -74,7 +73,7 @@ namespace UI.Client.ChuBao.ViewModels
 
             var link = _mapper.Map<LinkDto> (dto);
             WeakReferenceMessenger.Default.Send(new ValueChangedMessage<LinkDto>(link), "ToEditLinkForm");
-            _popupManager.CreatePopup<EditLinkForm>(App.Current.MainWindow);
+            _popupManager.CreatePopup<LinkEditForm>(App.Current.MainWindow);
         }
 
         #endregion

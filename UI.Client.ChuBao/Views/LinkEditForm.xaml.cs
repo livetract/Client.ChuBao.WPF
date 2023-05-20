@@ -6,13 +6,13 @@ using UI.Client.ChuBao.ViewModels;
 namespace UI.Client.ChuBao.Views
 {
     /// <summary>
-    /// Interaction logic for AddLinkItemDialog.xaml
+    /// Interaction logic for EditLinkItemDialog.xaml
     /// </summary>
-    public partial class AddLinkForm : UserControl
+    public partial class LinkEditForm : UserControl
     {
-        public AddLinkForm()
+        public LinkEditForm()
         {
-            this.DataContext = App.AppHost!.Services.GetRequiredService<AddLinkViewModel>();
+            this.DataContext = App.AppHost!.Services.GetRequiredService<LinkEditViewModel>();
             InitializeComponent();
         }
     }

@@ -3,9 +3,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Core.Client.ChuBao.Dtos;
+using Data.Client.ChuBao.DTOS;
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace UI.Client.ChuBao.ViewModels
@@ -16,9 +15,11 @@ namespace UI.Client.ChuBao.ViewModels
 
         public LinkDetailViewModel(ILinkService linkService)
         {
-            IsActive = true;
+            this.IsActive = true;
             SubmitNewRecordCommand = new RelayCommand(ExecuteAddNewRecordAsync);
             _linkService = linkService;
+            Link = new LinkDto();
+
         }
 
         #region Executions
@@ -37,8 +38,8 @@ namespace UI.Client.ChuBao.ViewModels
             var mark = await _linkService.GetMarkAsync(id);
             var rs = await _linkService.GetRecordListAsync(id);
             var records = rs.OrderByDescending(x => x.AddTime).ToList();
-            Mark = mark;
-            Records = new ObservableCollection<RecordDto>(records);
+            //Mark = mark;
+            //Records = new ObservableCollection<RecordDto>(records);
         }
 
         #region Messenger
@@ -77,11 +78,11 @@ namespace UI.Client.ChuBao.ViewModels
         private string? _recordContent;
         public string? RecordContent { get => _recordContent; set => SetProperty(ref _recordContent, value); }
 
-        private MarkDto? _mark;
-        public MarkDto? Mark { get => _mark; set => SetProperty(ref _mark, value); }
+        //private MarkDto? _mark;
+        //public MarkDto? Mark { get => _mark; set => SetProperty(ref _mark, value); }
 
-        private ObservableCollection<RecordDto>? _records;
-        public ObservableCollection<RecordDto>? Records { get => _records; set => SetProperty(ref _records, value); }
+        //private ObservableCollection<RecordDto>? _records;
+        //public ObservableCollection<RecordDto>? Records { get => _records; set => SetProperty(ref _records, value); }
 
         #endregion
 

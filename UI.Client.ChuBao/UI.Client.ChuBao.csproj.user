@@ -13,10 +13,10 @@
     <Compile Update="Views\LinkDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\AddLinkForm.xaml.cs">
+    <Compile Update="Views\LinkAddForm.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\EditLinkForm.xaml.cs">
+    <Compile Update="Views\LinkEditForm.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\EditLinkMarkDialog.xaml.cs">
@@ -31,6 +31,9 @@
     <Compile Update="Views\DashboardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\LinkmanView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="PopupWindow.xaml">
@@ -39,10 +42,10 @@
     <Page Update="Views\LinkDetailView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AddLinkForm.xaml">
+    <Page Update="Views\LinkAddForm.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\EditLinkForm.xaml">
+    <Page Update="Views\LinkEditForm.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\EditLinkMarkDialog.xaml">
@@ -88,6 +91,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\DashboardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\LinkmanView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

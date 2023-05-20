@@ -1,22 +1,23 @@
-﻿using Access.Client.ChuBao.Services;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Messaging.Messages;
-using Core.Client.ChuBao.Dtos;
+using Data.Client.ChuBao.DTOS;
+using Data.Client.ChuBao.Services;
 using System;
 
 namespace UI.Client.ChuBao.ViewModels
 {
-    public class EditLinkViewModel : ObservableRecipient
+    public class LinkEditViewModel : ObservableRecipient
     {
-        private readonly ILinkService _linkService;
+        private readonly ILinkLocalService _linkService;
 
-        public EditLinkViewModel(ILinkService linkService)
+        public LinkEditViewModel(ILinkLocalService linkService)
         {
             this.IsActive = true;
             this._linkService = linkService;
             SubmitEditedCommand = new RelayCommand(ExecuteSubmitedited);
+            EditLink = new LinkDto();
         }
 
 
@@ -38,11 +39,11 @@ namespace UI.Client.ChuBao.ViewModels
 
         #region Notification Properties
 
-        private LinkDto? _link;
-        public LinkDto? Link 
+        private LinkDto? _editLink;
+        public LinkDto? EditLink 
         { 
-            get => _link;
-            set => SetProperty(ref _link, value);
+            get => _editLink;
+            set => SetProperty(ref _editLink, value);
         }
 
         #endregion
@@ -50,13 +51,13 @@ namespace UI.Client.ChuBao.ViewModels
         #region Messenger
         protected override void OnActivated()
         {
-            WeakReferenceMessenger.Default.Register<ValueChangedMessage<LinkDto>,string>(this,"ToEditLinkForm", (r, m) => Link = m.Value);
+            WeakReferenceMessenger.Default.Register<ValueChangedMessage<LinkDto>,string>(this, "ToLinkEditForm", (r, m) => EditLink = m.Value);
             base.OnActivated();
         }
 
         protected override void OnDeactivated()
         {
-            WeakReferenceMessenger.Default.UnregisterAll<string>(this, "ToEditLinkForm");
+            WeakReferenceMessenger.Default.UnregisterAll<string>(this, "ToLinkEditForm");
             base.OnDeactivated();
         }
 

@@ -1,0 +1,146 @@
+﻿<UserControl x:Class="UI.Client.ChuBao.Views.LinkmanView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UI.Client.ChuBao.Views"
+             mc:Ignorable="d" 
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" 
+             xmlns:viewmodels="clr-namespace:UI.Client.ChuBao.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:LinkmanViewModel}">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" x:Key="textblockstyle">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0 5 5 0" />
+        </Style>
+
+
+    </UserControl.Resources>
+
+    <Border x:Name="borderlayoutcontent"
+            Style="{DynamicResource BorderCustomStyle.NonThickness}">
+        <StackPanel Orientation="Horizontal">
+            <Border x:Name="borderlist"
+                    Style="{DynamicResource BorderCustomStyle.NonThickness}"
+                    BorderThickness="0 0 0.3 0" Width="300">
+                <Grid>
+
+                    <TextBox HorizontalAlignment="Center"
+                             VerticalAlignment="Top"
+                             Margin="0 5 0 0"
+                             Width="220"
+                             BorderThickness="0 0 0 0.3"
+                             />
+
+                    <ListBox x:Name="listboxlinklist"
+                             Style="{DynamicResource CustomListBoxStyle.NonScrollbar}"
+                             ItemContainerStyle="{DynamicResource CustomListBoxItemContainer.Custom}" 
+                             ItemsSource="{Binding Linkmen}"
+                             Margin="0 30 0 0">
+
+                        <i:Interaction.Triggers>
+
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding PopupLinkEditCommand}"
+                                           CommandParameter="{Binding ElementName=listboxlinklist, Path=SelectedItem}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding DisplayLinkDetailCommand}"
+                                           CommandParameter="{Binding ElementName=listboxlinklist, Path=SelectedItem}"/>
+                            </i:EventTrigger>
+
+                        </i:Interaction.Triggers>
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{DynamicResource BorderCustomStyle.NonThickness}"
+                                        Background="Transparent"
+                                        Margin="5">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Border Grid.Row="0" 
+                                                Style="{DynamicResource BorderCustomStyle.NonThickness}" 
+                                                Background="Transparent"
+                                                Height="35">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="150" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Name}" FontSize="18" />
+
+                                                <StackPanel Grid.Column="1" >
+
+                                                    <Button Style="{DynamicResource CustomButtonStyle.NonThickness}"
+                                                            Height=" 20" Width="20">
+                                                        <fa:IconImage Icon="Flag">
+                                                            <i:Interaction.Triggers>
+                                                                <i:DataTrigger Binding="{Binding IsAttention}" Value="True">
+                                                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Warning.Foreground}" />
+                                                                </i:DataTrigger>
+                                                                <i:DataTrigger Binding="{Binding IsAttention}" Value="False">
+                                                                    <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=fa:IconImage}}"
+                                                                        PropertyName="Foreground" Value="{StaticResource Brush.Remains.Foreground}" />
+                                                                </i:DataTrigger>
+                                                            </i:Interaction.Triggers>
+                                                        </fa:IconImage>
+
+                                                        <Button.ToolTip>
+                                                            <ToolTip Content="重点对象" Background="AliceBlue" Foreground="RoyalBlue"/>
+
+                                                        </Button.ToolTip>
+
+                                                    </Button>
+
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+
+                                        <Border Grid.Row="1" Style="{DynamicResource BorderCustomStyle.NonThickness}" Background="Transparent">
+                                            <Grid >
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="80"/>
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Phone}" Grid.Column="0" />
+                                                <TextBlock Text="{Binding Complex}" Grid.Column="1" />
+                                                <TextBlock Text="{Binding Door}" Grid.Column="2" />
+                                            </Grid>
+                                        </Border>
+
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+                    <Button VerticalAlignment="Bottom"
+                            HorizontalAlignment="Right"
+                            Command="{Binding PopupLinkAddCommand}"
+                            Style="{DynamicResource CustomButtonStyle.Primary}"
+                            Height="30" Width="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Height}"
+                            Margin="0 0 10 10">
+                        <fa:IconImage Icon="Add" Foreground="White" />
+                    </Button>
+                </Grid>
+
+            </Border>
+
+            <Border x:Name="borderitemdetail">
+                <ContentPresenter x:Name="conent_detail"
+                          Content="{Binding LinkDetailView}"/>
+            </Border>
+
+
+        </StackPanel>
+    </Border>
+
+
+</UserControl>

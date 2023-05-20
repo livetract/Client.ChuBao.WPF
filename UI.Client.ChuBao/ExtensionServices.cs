@@ -6,6 +6,11 @@ using UI.Client.ChuBao.Views;
 using Microsoft.Extensions.Configuration;
 using UI.Client.ChuBao.Commons;
 using Access.Client.ChuBao.Services;
+using Data.Client.ChuBao.Repositories;
+using Data.Client.ChuBao.Services;
+using Data.Client.ChuBao.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Data.Client.ChuBao.Commons;
 
 namespace UI.Client.ChuBao
 {
@@ -20,30 +25,34 @@ namespace UI.Client.ChuBao
             services.AddScoped<ContactView>();
             services.AddScoped<DashboardView>();
             services.AddScoped<LinkDetailView>();
+            services.AddTransient<LinkmanView>();
 
-            services.AddScoped<AddLinkForm>();
-            services.AddScoped<EditLinkForm>();
+            services.AddScoped<LinkAddForm>();
+            services.AddScoped<LinkEditForm>();
             //services.AddScoped<EditLinkMarkDialog>();
         }
         public static void ConfigureViewModels(this IServiceCollection services)
         {
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<LoginViewModel>();
-
+            services.AddTransient<LinkmanViewModel>();
             services.AddScoped<ContactViewModel>();
             services.AddScoped<DashboardViewModel>();
             services.AddScoped<LinkDetailViewModel>();
 
-            services.AddScoped<AddLinkViewModel>();
-            services.AddScoped<EditLinkViewModel>();
+            services.AddScoped<LinkAddViewModel>();
+            services.AddScoped<LinkEditViewModel>();
         }
 
         public static void ConfigureCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAutoMapper(typeof(MapperProfile));
+            services.AddAutoMapper(typeof(DataProfile));
             services.AddTransient<IPopupManager, PopupManager>();
             services.AddFormFactory<PopupWindow>();
 
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<ILinkLocalService,  LinkLocalService>();
 
             services.AddHttpClient<ILinkService, LinkService>(
                 http =>

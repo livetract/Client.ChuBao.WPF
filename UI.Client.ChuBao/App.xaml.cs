@@ -4,6 +4,8 @@ using System;
 using System.Windows;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using Data.Client.ChuBao.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace UI.Client.ChuBao
 {
@@ -44,6 +46,18 @@ namespace UI.Client.ChuBao
             services.ConfigureViews();
             services.ConfigureViewModels();
             services.ConfigureCustomServices(context.Configuration);
+
+
+            services.AddDbContext<AppdbContext>(options =>
+                options.UseSqlServer(context.Configuration.GetConnectionString("AppDb"),
+                b =>
+                {
+                    b.EnableRetryOnFailure(
+                    maxRetryCount: 5,
+                    maxRetryDelay: TimeSpan.FromSeconds(30),
+                    errorNumbersToAdd: new int[] { 2 });
+                    b.MigrationsAssembly(this.GetType().Assembly.FullName);
+                }));
         }
 
         protected override async void OnStartup(StartupEventArgs e)
