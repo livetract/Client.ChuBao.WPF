@@ -8,8 +8,6 @@ using UI.Client.ChuBao.Commons;
 using Access.Client.ChuBao.Services;
 using Data.Client.ChuBao.Repositories;
 using Data.Client.ChuBao.Services;
-using Data.Client.ChuBao.Contexts;
-using Microsoft.EntityFrameworkCore;
 using Data.Client.ChuBao.Commons;
 
 namespace UI.Client.ChuBao
@@ -24,11 +22,11 @@ namespace UI.Client.ChuBao
 
             services.AddScoped<ContactView>();
             services.AddScoped<DashboardView>();
-            services.AddScoped<LinkDetailView>();
+            services.AddTransient<LinkDetailView>();
             services.AddTransient<LinkmanView>();
 
             services.AddScoped<LinkAddForm>();
-            services.AddScoped<LinkEditForm>();
+            services.AddTransient<LinkEditForm>();
             //services.AddScoped<EditLinkMarkDialog>();
         }
         public static void ConfigureViewModels(this IServiceCollection services)
@@ -36,12 +34,12 @@ namespace UI.Client.ChuBao
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<LoginViewModel>();
             services.AddTransient<LinkmanViewModel>();
-            services.AddScoped<ContactViewModel>();
+            //services.AddScoped<ContactViewModel>();
             services.AddScoped<DashboardViewModel>();
-            services.AddScoped<LinkDetailViewModel>();
+            services.AddTransient<LinkDetailViewModel>();
 
-            services.AddScoped<LinkAddViewModel>();
-            services.AddScoped<LinkEditViewModel>();
+            services.AddTransient<LinkAddViewModel>();
+            //services.AddTransient<LinkEditViewModel>();
         }
 
         public static void ConfigureCustomServices(this IServiceCollection services, IConfiguration configuration)

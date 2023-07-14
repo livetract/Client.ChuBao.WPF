@@ -39,9 +39,7 @@
                              ItemContainerStyle="{DynamicResource CustomListBoxItemContainer.Custom}" 
                              ItemsSource="{Binding Linkmen}"
                              Margin="0 30 0 0">
-
                         <i:Interaction.Triggers>
-
                             <i:EventTrigger EventName="MouseDoubleClick">
                                 <i:InvokeCommandAction Command="{Binding PopupLinkEditCommand}"
                                            CommandParameter="{Binding ElementName=listboxlinklist, Path=SelectedItem}"/>
@@ -50,9 +48,7 @@
                                 <i:InvokeCommandAction Command="{Binding DisplayLinkDetailCommand}"
                                            CommandParameter="{Binding ElementName=listboxlinklist, Path=SelectedItem}"/>
                             </i:EventTrigger>
-
                         </i:Interaction.Triggers>
-
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border Style="{DynamicResource BorderCustomStyle.NonThickness}"
@@ -73,9 +69,7 @@
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Text="{Binding Name}" FontSize="18" />
-
                                                 <StackPanel Grid.Column="1" >
-
                                                     <Button Style="{DynamicResource CustomButtonStyle.NonThickness}"
                                                             Height=" 20" Width="20">
                                                         <fa:IconImage Icon="Flag">
@@ -90,18 +84,13 @@
                                                                 </i:DataTrigger>
                                                             </i:Interaction.Triggers>
                                                         </fa:IconImage>
-
                                                         <Button.ToolTip>
                                                             <ToolTip Content="重点对象" Background="AliceBlue" Foreground="RoyalBlue"/>
-
                                                         </Button.ToolTip>
-
                                                     </Button>
-
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
-
                                         <Border Grid.Row="1" Style="{DynamicResource BorderCustomStyle.NonThickness}" Background="Transparent">
                                             <Grid >
                                                 <Grid.ColumnDefinitions>
@@ -114,12 +103,10 @@
                                                 <TextBlock Text="{Binding Door}" Grid.Column="2" />
                                             </Grid>
                                         </Border>
-
                                     </Grid>
                                 </Border>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-
                     </ListBox>
                     <Button VerticalAlignment="Bottom"
                             HorizontalAlignment="Right"

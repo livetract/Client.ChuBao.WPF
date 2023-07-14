@@ -52,7 +52,7 @@
                         <ColumnDefinition Width="35"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock x:Name="title_text" Grid.Column="0" Text="修改信息" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <TextBlock x:Name="title_text" Grid.Column="0" Text="新增信息" VerticalAlignment="Center" HorizontalAlignment="Left">
 
                     </TextBlock>
                     <Button x:Name="close" 

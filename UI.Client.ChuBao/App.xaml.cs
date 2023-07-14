@@ -18,27 +18,16 @@ namespace UI.Client.ChuBao
         public static string AccessToken { get; set; } = string.Empty;
         public App()
         {
-            var builder = Host.CreateDefaultBuilder()
-                .ConfigureAppConfiguration(ConfigureAppConfiguration)
-                .ConfigureServices(ConfigureServices);
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true, true)
+                .Build();
 
-            AppHost= builder.Build();
+            AppHost = Host.CreateDefaultBuilder()
+                .ConfigureServices(ConfigureServices)
+                .Build();
+
             AppHost.RunAsync();
-        }
-
-        private void ConfigureAppConfiguration(HostBuilderContext context, IConfigurationBuilder config)
-        {
-            var env = context.HostingEnvironment;
-
-            config.Sources.Clear();
-
-            config.SetBasePath(Directory.GetCurrentDirectory());
-            config
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
-            config.AddEnvironmentVariables();
-
-            config.Build();
         }
 
         private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
@@ -46,7 +35,6 @@ namespace UI.Client.ChuBao
             services.ConfigureViews();
             services.ConfigureViewModels();
             services.ConfigureCustomServices(context.Configuration);
-
 
             services.AddDbContext<AppdbContext>(options =>
                 options.UseSqlServer(context.Configuration.GetConnectionString("AppDb"),
@@ -63,20 +51,11 @@ namespace UI.Client.ChuBao
         protected override async void OnStartup(StartupEventArgs e)
         {
             await AppHost!.StartAsync();
-            try
-            {
-                //var start = AppHost!.Services.GetRequiredService<LoginWindow>();
-                var start = AppHost!.Services.GetRequiredService<MainWindow>();
-                if (start == null)
-                {
-                    return;
-                }
-                start.Show();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+
+            //var start = AppHost!.Services.GetRequiredService<LoginWindow>();
+            var start = AppHost!.Services.GetRequiredService<MainWindow>();
+            start.Show();
+
             base.OnStartup(e);
         }
 
