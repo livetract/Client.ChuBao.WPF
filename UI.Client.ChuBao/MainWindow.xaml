@@ -8,8 +8,8 @@
         
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" 
-        xmlns:viewmodels="clr-namespace:UI.Client.ChuBao.ViewModels" 
-        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+        xmlns:vm="clr-namespace:UI.Client.ChuBao.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
         
         mc:Ignorable="d"
         Height="800" Width="1200"
@@ -53,49 +53,52 @@
                     </Grid.ColumnDefinitions>
                     <!--👆这个地方有限制：只有有内容的时候才能拖动-->
 
-                    <Image x:Name="image_logo"
+                    <Image x:Name="UiLogoImage"
                        Source="/images/logo.png" 
                        Grid.Column="0"/>
-                    <TextBlock x:Name="tbx_title"
+                    <TextBlock x:Name="UiLogoText"
                                Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=Title}"
                                Grid.Column="1"
                                VerticalAlignment="Center"/>
 
-                    <Button Style="{DynamicResource CustomButtonStyle.NonThickness.Control.Normal}" x:Name="btn_control_minimize"
+                    <Button Style="{DynamicResource CustomButtonStyle.NonThickness.Control.Normal}" 
+                            x:Name="CtrlBarMinBtn"
                             Grid.Column="4"
                             Margin="2">
                         <fa:IconImage Icon="WindowMinimize" Foreground="RoyalBlue" />
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                                                    PropertyName="WindowState"
-                                                    Value="{x:Static WindowState.Minimized}" />
+                                <i:ChangePropertyAction 
+                                    TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                    PropertyName="WindowState"
+                                    Value="{x:Static WindowState.Minimized}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Button>
 
-                    <Button x:Name="btn_control_maximize"
+                    <Button x:Name="CtrlBarMixBtn"
                             Style="{DynamicResource CustomButtonStyle.NonThickness.Control.Normal}"
                             Grid.Column="5"
                             Margin=" 0 2 2 2" >
                         <fa:IconImage Icon="Maximize" Foreground="RoyalBlue" />
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <i:ChangePropertyAction TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                                                        PropertyName="WindowState"
-                                                        Value="{x:Static WindowState.Maximized}"/>
+                                <i:ChangePropertyAction 
+                                    TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                    PropertyName="WindowState"
+                                    Value="{x:Static WindowState.Maximized}"/>
                             </i:EventTrigger>
                             <i:DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=WindowState}" Value="Maximized">
-                                <i:ChangePropertyAction TargetObject="{Binding ElementName=btn_control_maximize}"
+                                <i:ChangePropertyAction TargetObject="{Binding ElementName=CtrlBarMixBtn}"
                                                         PropertyName="Visibility" Value="Hidden"/>
                             </i:DataTrigger>
                             <i:DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=WindowState}" Value="Normal">
-                                <i:ChangePropertyAction TargetObject="{Binding ElementName=btn_control_maximize}"
+                                <i:ChangePropertyAction TargetObject="{Binding ElementName=CtrlBarMixBtn}"
                                                         PropertyName="Visibility" Value="Visible"/>
                             </i:DataTrigger>
                         </i:Interaction.Triggers>
                     </Button>
-                    <Button x:Name="btn_control_normal"
+                    <Button x:Name="CtrlBarNormalBtn"
                             Style="{DynamicResource CustomButtonStyle.NonThickness.Control.Normal}"
                             Grid.Column="5"
                             Margin=" 0 2 2 2" >
@@ -107,16 +110,16 @@
                                                         Value="{x:Static WindowState.Normal}"/>
                             </i:EventTrigger>
                             <i:DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=WindowState}" Value="Maximized">
-                                <i:ChangePropertyAction TargetObject="{Binding ElementName=btn_control_normal}"
+                                <i:ChangePropertyAction TargetObject="{Binding ElementName=CtrlBarNormalBtn}"
                                                         PropertyName="Visibility" Value="Visible"/>
                             </i:DataTrigger>
                             <i:DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=WindowState}" Value="Normal">
-                                <i:ChangePropertyAction TargetObject="{Binding ElementName=btn_control_normal}"
+                                <i:ChangePropertyAction TargetObject="{Binding ElementName=CtrlBarNormalBtn}"
                                                         PropertyName="Visibility" Value="Hidden"/>
                             </i:DataTrigger>
                         </i:Interaction.Triggers>
                     </Button>
-                    <Button x:Name="btn_control_close"
+                    <Button x:Name="CtrlBarCloseBtn"
                             Style="{DynamicResource CustomButtonStyle.NonThickness.Control.Close}"
                             Grid.Column="6"
                             Margin="0 2 2 2"
@@ -138,12 +141,12 @@
                 </Grid>
             </Border>
 
-            <Border x:Name="layoutbody"
+            <Border x:Name="UiBodyBorder"
                     Grid.Row="1"
                     BorderThickness="0 0 0 0.3"
                     BorderBrush="Black">
                 <StackPanel Orientation="Horizontal">
-                    <Border x:Name="layoutbodymenu"
+                    <Border x:Name="BodyNavBorder"
                             Width="200"
                             BorderThickness="0 0 0.3 0"
                             BorderBrush="Black">
@@ -154,10 +157,10 @@
                                          Command="{Binding NavigateToDashboardCommand}"
                                          >
                                 <StackPanel Orientation="Horizontal">
-                                    <fa:IconImage x:Name="dashboardicon" Icon="House"  />
-                                    <TextBlock x:Name="dashboardcaption" Text="DashBoard" 
+                                    <fa:IconImage x:Name="NavDashboardIconImage" Icon="House"  />
+                                    <TextBlock x:Name="NavDashboardDisplayText" Text="DashBoard" 
                                                Style="{DynamicResource CustomTextBlockStyle.ForMenu}"
-                                               Width="{Binding ElementName=layoutbodymenu, Path=Width}" />
+                                               Width="{Binding ElementName=BodyNavBorder, Path=Width}" />
                                 </StackPanel>
                             </RadioButton>
 
@@ -165,20 +168,20 @@
                                          Margin="0 10 0 0"
                                          Command="{Binding NavigateToContactListCommand}">
                                 <StackPanel Orientation="Horizontal">
-                                    <fa:IconImage x:Name="listicon" Icon="List" />
-                                    <TextBlock x:Name="listcaption" Style="{DynamicResource CustomTextBlockStyle.ForMenu}" 
+                                    <fa:IconImage x:Name="NavListIconImage" Icon="List" />
+                                    <TextBlock x:Name="NavListDisplayText" Style="{DynamicResource CustomTextBlockStyle.ForMenu}" 
                                                Text="ContactList" 
-                                               Width="{Binding ElementName=layoutbodymenu, Path=Width}" />
+                                               Width="{Binding ElementName=BodyNavBorder, Path=Width}" />
                                 </StackPanel>
                             </RadioButton>
                         </StackPanel>
                     </Border>
-                    <Border x:Name="layoutbodycontent">
+                    <Border x:Name="BodyContentBorder">
                         <ContentPresenter Content="{Binding CurrentView}"/>
                     </Border>
                 </StackPanel>
             </Border>
-            <Border x:Name="border_bottom"
+            <Border x:Name="UiFooterBorder"
                     Grid.Row="2">
                 <TextBlock Text="Be Comming..." />
             </Border>
