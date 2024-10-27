@@ -18,11 +18,12 @@ namespace UI.Client.ChuBao
         public static string AccessToken { get; set; } = string.Empty;
         public App()
         {
+            /*
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", true, true)
                 .Build();
-
+            */
             AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices(ConfigureServices)
                 .Build();
